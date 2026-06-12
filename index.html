@@ -1,0 +1,2119 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>CDC 2026 · สมาชิกกลุ่ม C</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#f4f6fb; --card:#ffffff; --ink:#0f1f3d; --ink-soft:#5b6781;
+    --line:#e6eaf2; --navy:#13294b; --navy-2:#1d3a66;
+    --accent:#0ea5a4; --accent-soft:#e3f6f5; --gold:#c79a3a;
+    --skill:#1d3a66; --skill-bg:#eaf0fb; --int:#0e7f7e; --int-bg:#e3f6f5;
+    --shadow:0 1px 2px rgba(16,31,61,.04),0 8px 24px rgba(16,31,61,.06);
+    --r:16px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    font-family:"IBM Plex Sans Thai",system-ui,sans-serif;
+    background:var(--bg); color:var(--ink); -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 16px 80px}
+
+  /* ---------- header ---------- */
+  header.top{
+    background:linear-gradient(135deg,var(--navy),var(--navy-2));
+    color:#fff;padding:26px 0 18px;margin-bottom:18px;
+    border-bottom:3px solid var(--gold);
+  }
+  header.top .wrap{padding-bottom:0}
+  .brand{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .brand .badge{
+    background:var(--gold);color:#1a1a1a;font-weight:700;
+    border-radius:10px;padding:6px 12px;font-size:15px;letter-spacing:.5px;
+  }
+  .brand h1{font-size:19px;margin:0;font-weight:600}
+  .brand .sub{color:#aebbd6;font-size:13px;margin-top:2px}
+
+  /* ---------- tabs ---------- */
+  nav.tabs{display:flex;gap:6px;margin-top:18px;flex-wrap:wrap}
+  nav.tabs button{
+    appearance:none;border:0;cursor:pointer;font-family:inherit;
+    background:rgba(255,255,255,.10);color:#dbe3f3;
+    padding:10px 16px;border-radius:11px 11px 0 0;font-size:14.5px;font-weight:500;
+    transition:.15s;
+  }
+  nav.tabs button:hover{background:rgba(255,255,255,.18)}
+  nav.tabs button.active{background:var(--bg);color:var(--navy);font-weight:600}
+
+  .panel{display:none}
+  .panel.active{display:block;animation:fade .25s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* ---------- toolbar / filter ---------- */
+  .toolbar{position:sticky;top:0;z-index:20;background:var(--bg);padding:14px 0 8px}
+  .searchrow{display:flex;gap:10px;align-items:center}
+  .search{flex:1;position:relative}
+  .search input{
+    width:100%;padding:13px 14px 13px 42px;border:1px solid var(--line);
+    border-radius:12px;font-size:15px;font-family:inherit;background:#fff;color:var(--ink);
+    box-shadow:var(--shadow);
+  }
+  .search input:focus{outline:none;border-color:var(--accent)}
+  .search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#9aa6bf}
+  .btn-filter{
+    display:flex;align-items:center;gap:7px;border:1px solid var(--line);background:#fff;
+    border-radius:12px;padding:12px 15px;font-size:14.5px;font-weight:500;cursor:pointer;
+    font-family:inherit;color:var(--ink);box-shadow:var(--shadow);white-space:nowrap;
+  }
+  .btn-filter.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .btn-filter .pill{background:var(--accent);color:#fff;border-radius:20px;font-size:12px;padding:0 7px;font-weight:700}
+
+  .filters{margin-top:10px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:var(--shadow);display:none}
+  .filters.open{display:block}
+  .fgroup{margin-bottom:12px}
+  .fgroup:last-child{margin-bottom:0}
+  .fgroup h4{margin:0 0 8px;font-size:12.5px;font-weight:600;color:var(--ink-soft);letter-spacing:.3px;text-transform:uppercase}
+  .chips{display:flex;flex-wrap:wrap;gap:7px}
+  .chip{
+    border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;
+    border-radius:20px;padding:6px 13px;font-size:13.5px;font-family:inherit;transition:.12s;
+    display:inline-flex;align-items:center;gap:6px;
+  }
+  .chip:hover{border-color:var(--accent)}
+  .chip .n{color:#9aa6bf;font-size:12px}
+  .chip.sel{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .chip.sel .n{color:#bcd}
+  .filter-foot{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+  .clearbtn{background:none;border:0;color:var(--accent);font-family:inherit;font-size:13.5px;cursor:pointer;font-weight:600}
+
+  .countline{font-size:13.5px;color:var(--ink-soft);margin:14px 2px 4px}
+  .countline b{color:var(--ink)}
+
+  /* ---------- cards ---------- */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-top:10px}
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+    padding:16px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:11px;
+  }
+  .card .head{display:flex;gap:12px;align-items:center}
+  .avatar{
+    width:54px;height:54px;border-radius:14px;flex:0 0 auto;background:var(--accent-soft);
+    object-fit:cover;border:1px solid var(--line);
+  }
+  .avatar.emoji{display:flex;align-items:center;justify-content:center;font-size:30px;line-height:1;user-select:none}
+  .avatar.sm{width:40px;height:40px;border-radius:11px}
+  .avatar.sm.emoji{font-size:22px}
+  .avatar.xs{width:32px;height:32px;border-radius:9px}
+  .avatar.xs.emoji{font-size:18px}
+  .card .name{font-size:16.5px;font-weight:600;line-height:1.2}
+  .card .line{font-size:13px;color:var(--ink-soft);margin-top:2px}
+  .card .line .ic{opacity:.6}
+  .about{font-size:13.5px;color:#43506e;background:#f7f9fd;border-radius:10px;padding:9px 11px;border:1px solid var(--line)}
+  .sect{display:flex;flex-direction:column;gap:6px}
+  .sect .lbl{font-size:11.5px;font-weight:600;color:var(--ink-soft);letter-spacing:.3px;text-transform:uppercase}
+  .tagrow{display:flex;flex-wrap:wrap;gap:6px}
+  .tag{font-size:12.5px;padding:4px 10px;border-radius:8px;font-weight:500;cursor:pointer}
+  .tag.skill{background:var(--skill-bg);color:var(--skill)}
+  .tag.int{background:var(--int-bg);color:var(--int)}
+  .tag.hit{outline:2px solid var(--accent);outline-offset:1px}
+  .when{display:flex;flex-wrap:wrap;gap:6px;font-size:12.5px;color:var(--ink-soft);border-top:1px dashed var(--line);padding-top:10px}
+  .when .w{background:#f0f3fa;border-radius:7px;padding:3px 9px}
+  .empty{text-align:center;color:var(--ink-soft);padding:60px 20px;font-size:15px}
+
+  /* ---------- schedule ---------- */
+  .sched-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+  @media(max-width:680px){.sched-grid{grid-template-columns:1fr}}
+  .box{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:18px;box-shadow:var(--shadow)}
+  .box h3{margin:0 0 14px;font-size:15px;font-weight:600}
+  .bar{display:grid;grid-template-columns:74px 1fr 34px;align-items:center;gap:10px;margin-bottom:9px;font-size:13.5px}
+  .bar .track{background:#eef1f7;border-radius:8px;height:22px;overflow:hidden}
+  .bar .fill{height:100%;border-radius:8px;background:linear-gradient(90deg,var(--navy-2),var(--accent));transition:width .5s}
+  .bar .num{text-align:right;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+  .bar.top .lbl{font-weight:700;color:var(--navy)}
+
+  .heat-wrap{overflow-x:auto}
+  table.heat{border-collapse:collapse;margin-top:18px;width:100%;min-width:380px}
+  table.heat th,table.heat td{padding:9px 6px;text-align:center;font-size:13px}
+  table.heat th{color:var(--ink-soft);font-weight:600}
+  table.heat td.cell{border-radius:8px;color:#fff;font-weight:600;font-variant-numeric:tabular-nums}
+  table.heat th.rowlbl{text-align:right;padding-right:12px;color:var(--ink);font-weight:600;white-space:nowrap}
+
+  .verdict{background:linear-gradient(135deg,var(--accent-soft),#eef6ff);border:1px solid #cfeae9;border-radius:var(--r);padding:18px 20px;margin-top:18px}
+  .verdict h3{margin:0 0 8px;font-size:16px;color:var(--navy)}
+  .verdict p{margin:0;font-size:14.5px;color:#2c3a57}
+  .verdict .slot{display:inline-block;background:#fff;border:1px solid #cfeae9;border-radius:9px;padding:4px 11px;margin:6px 6px 0 0;font-weight:600;font-size:14px;color:var(--navy)}
+
+  /* ---------- suggestions ---------- */
+  .note{font-size:13px;color:var(--ink-soft);background:#fff;border:1px dashed var(--line);border-radius:12px;padding:11px 14px;margin-top:16px;display:flex;gap:9px;align-items:flex-start}
+  .theme-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:13px;margin-top:16px}
+  .theme{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px;box-shadow:var(--shadow);border-left:4px solid var(--accent)}
+  .theme.major{border-left-color:var(--gold);background:linear-gradient(135deg,#fffdf5,#fff)}
+  .theme .tt{font-weight:600;font-size:15px;display:flex;align-items:center;gap:8px;margin-bottom:6px}
+  .theme .mt{font-size:12.5px;color:var(--accent);font-weight:600}
+  .theme.major .mt{color:var(--gold)}
+  .theme p{margin:6px 0 0;font-size:13.5px;color:#43506e}
+  .raw-h{margin:26px 0 12px;font-size:15px;font-weight:600}
+  .raw-list{display:flex;flex-direction:column;gap:9px}
+  .quote{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 15px;font-size:14px;color:#2c3a57;box-shadow:var(--shadow);position:relative;padding-left:42px}
+  .quote::before{content:"\201C";position:absolute;left:13px;top:6px;font-size:30px;color:var(--accent);opacity:.5;font-family:Georgia,serif}
+
+  /* ---------- shared form bits ---------- */
+  .btn-primary{appearance:none;border:0;cursor:pointer;font-family:inherit;font-weight:600;
+    background:var(--navy);color:#fff;border-radius:11px;padding:10px 20px;font-size:14.5px;transition:.15s}
+  .btn-primary:hover{background:var(--navy-2)}
+  .btn-primary:disabled{opacity:.45;cursor:not-allowed}
+  .btn-ghost{appearance:none;border:1px solid var(--line);cursor:pointer;font-family:inherit;
+    background:#fff;color:var(--ink-soft);border-radius:11px;padding:10px 16px;font-size:14px}
+  .whorow{display:flex;align-items:center;gap:9px;margin-bottom:10px}
+  .wholbl{font-size:12.5px;font-weight:600;color:var(--ink-soft)}
+  select.who{font-family:inherit;font-size:14px;padding:8px 12px;border:1px solid var(--line);
+    border-radius:10px;background:#fff;color:var(--ink);max-width:100%;cursor:pointer}
+  .composer-foot{display:flex;justify-content:space-between;align-items:center;margin-top:10px;gap:10px}
+  .hint{font-size:12.5px;color:#c0392b}
+
+  /* ---------- discussion board ---------- */
+  .composer{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px;box-shadow:var(--shadow);margin-top:18px}
+  .composer textarea,.kb-input{width:100%;font-family:inherit;font-size:14.5px;color:var(--ink);
+    border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:#fcfdff;resize:vertical}
+  .composer textarea:focus,.kb-input:focus{outline:none;border-color:var(--accent)}
+  .feed{display:flex;flex-direction:column;gap:14px;margin-top:16px}
+  .post{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px;box-shadow:var(--shadow)}
+  .post-head{display:flex;align-items:center;gap:11px;margin-bottom:10px}
+  .post-head .name{font-size:15px;font-weight:600}
+  .post-head .ts{font-size:12px;color:var(--ink-soft)}
+  .post-body{font-size:14.5px;color:#2c3a57;white-space:pre-wrap;word-break:break-word;line-height:1.55}
+  .post-actions{display:flex;gap:8px;margin-top:12px;border-top:1px solid var(--line);padding-top:10px}
+  .act{appearance:none;border:0;background:none;cursor:pointer;font-family:inherit;font-size:13.5px;
+    color:var(--ink-soft);padding:6px 12px;border-radius:9px;transition:.12s;display:inline-flex;align-items:center;gap:6px}
+  .act:hover{background:#f0f3fa}
+  .act.liked{color:#e0245e;font-weight:600}
+  .comments{margin-top:12px;border-top:1px dashed var(--line);padding-top:12px;display:none;flex-direction:column;gap:10px}
+  .comments.open{display:flex}
+  .comment{display:flex;gap:9px;align-items:flex-start}
+  .comment .bubble{background:#f4f6fb;border-radius:12px;padding:8px 12px;flex:1}
+  .comment .name{font-size:13px;font-weight:600}
+  .comment .ts{font-size:11px;color:var(--ink-soft);margin-left:6px;font-weight:400}
+  .comment .ct{font-size:13.5px;color:#2c3a57;white-space:pre-wrap;word-break:break-word}
+  .add-comment{display:flex;gap:8px;align-items:center}
+  .add-comment input{flex:1;font-family:inherit;font-size:13.5px;padding:9px 12px;border:1px solid var(--line);border-radius:20px;background:#fff}
+  .add-comment input:focus{outline:none;border-color:var(--accent)}
+  .add-comment button{appearance:none;border:0;background:var(--accent);color:#fff;font-family:inherit;
+    font-weight:600;font-size:13px;border-radius:20px;padding:9px 16px;cursor:pointer;white-space:nowrap}
+  .empty-feed{text-align:center;color:var(--ink-soft);padding:40px 20px;font-size:14.5px}
+
+  /* ---------- knowledge base ---------- */
+  .kb-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:18px;flex-wrap:wrap}
+  .kb-title{margin:0;font-size:18px;font-weight:600}
+  .kb-sub{margin:3px 0 0;font-size:13px;color:var(--ink-soft)}
+  .kb-editor{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px;box-shadow:var(--shadow);margin-top:14px;display:flex;flex-direction:column;gap:10px}
+  .kb-editor[hidden]{display:none}
+  .kb-list{display:flex;flex-direction:column;gap:13px;margin-top:16px}
+  .article{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:18px;box-shadow:var(--shadow)}
+  .article h3{margin:0 0 8px;font-size:17px;font-weight:600;cursor:pointer}
+  .article h3:hover{color:var(--accent)}
+  .article-meta{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--ink-soft);margin-bottom:10px}
+  .article-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+  .article-tags .t{font-size:12px;background:var(--skill-bg);color:var(--skill);border-radius:7px;padding:3px 9px}
+  .article-body{font-size:14.5px;color:#2c3a57;white-space:pre-wrap;word-break:break-word;line-height:1.6}
+  .article-body.clamp{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .article .more{background:none;border:0;color:var(--accent);font-family:inherit;font-weight:600;font-size:13.5px;cursor:pointer;margin-top:8px;padding:0}
+
+  /* ---------- image upload ---------- */
+  .foot-left{display:flex;align-items:center;gap:10px}
+  .btn-attach{appearance:none;border:1px solid var(--line);background:#fff;cursor:pointer;font-family:inherit;
+    font-size:13.5px;color:var(--ink-soft);border-radius:10px;padding:8px 13px;transition:.12s}
+  .btn-attach:hover{border-color:var(--accent);color:var(--accent)}
+  .img-preview{position:relative;margin-top:10px;border-radius:12px;overflow:hidden;border:1px solid var(--line);max-width:280px}
+  .img-preview img{display:block;width:100%;height:auto}
+  .img-preview .rm{position:absolute;top:6px;right:6px;width:26px;height:26px;border:0;border-radius:50%;
+    background:rgba(0,0,0,.6);color:#fff;cursor:pointer;font-size:15px;line-height:1;display:flex;align-items:center;justify-content:center}
+  .post-img{margin-top:10px;border-radius:12px;overflow:hidden;border:1px solid var(--line)}
+  .post-img img{display:block;width:100%;height:auto;cursor:zoom-in}
+  .article-cover{margin:0 0 12px;border-radius:12px;overflow:hidden;border:1px solid var(--line)}
+  .article-cover img{display:block;width:100%;height:auto;max-height:280px;object-fit:cover}
+
+  /* ---------- delete own ---------- */
+  .act.del{margin-left:auto;color:#b0b8c8}
+  .act.del:hover{background:#fdeaea;color:#c0392b}
+  .article-del{appearance:none;border:0;background:none;cursor:pointer;font-family:inherit;font-size:13px;
+    color:#b0b8c8;padding:4px 8px;border-radius:8px}
+  .article-del:hover{background:#fdeaea;color:#c0392b}
+
+  /* ---------- kb search/filter ---------- */
+  .kb-tools{margin-top:14px;display:flex;flex-direction:column;gap:10px}
+  .kb-tagfilter{display:flex;flex-wrap:wrap;gap:7px}
+  .kb-tagfilter .chip{border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;
+    border-radius:20px;padding:5px 12px;font-size:13px;font-family:inherit;transition:.12s}
+  .kb-tagfilter .chip:hover{border-color:var(--accent)}
+  .kb-tagfilter .chip.sel{background:var(--int);color:#fff;border-color:var(--int)}
+
+  /* ---------- confirm modal ---------- */
+  .modal-overlay{position:fixed;inset:0;background:rgba(16,31,61,.45);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px;backdrop-filter:blur(2px)}
+  .modal-overlay[hidden]{display:none}
+  .modal{background:#fff;border-radius:18px;padding:24px;max-width:380px;width:100%;box-shadow:0 20px 60px rgba(16,31,61,.3);animation:pop .15s ease}
+  @keyframes pop{from{transform:scale(.94);opacity:0}to{transform:scale(1);opacity:1}}
+  .modal-title{font-size:17px;font-weight:700;margin-bottom:8px}
+  .modal-msg{font-size:14.5px;color:#43506e;margin-bottom:20px;line-height:1.55}
+  .modal-actions{display:flex;justify-content:flex-end;gap:10px}
+  .modal-who{width:100%;margin:0 0 18px;padding:11px 13px;font-size:15px}
+  .btn-danger{appearance:none;border:0;cursor:pointer;font-family:inherit;font-weight:600;
+    background:#c0392b;color:#fff;border-radius:11px;padding:10px 20px;font-size:14.5px}
+  .btn-danger:hover{background:#a93226}
+
+  /* ---------- edit buttons (post/article) ---------- */
+  .act.edit{color:#5b6781}
+  .act.edit:hover{background:#eef0f6;color:var(--navy)}
+  .post-edit textarea{width:100%;font-family:inherit;font-size:14.5px;color:var(--ink);
+    border:1px solid var(--accent);border-radius:12px;padding:11px 13px;background:#fcfdff;resize:vertical}
+  .post-edit .row{display:flex;gap:8px;justify-content:flex-end;margin-top:8px;align-items:center}
+  .post-edit .rmimg{margin-right:auto;font-size:13px;color:#c0392b;background:none;border:0;cursor:pointer;font-family:inherit}
+
+  /* ---------- tag select (article editor) ---------- */
+  .tag-select{display:flex;flex-direction:column;gap:8px}
+  .tag-select .grp-lbl{font-size:11.5px;font-weight:600;color:var(--ink-soft);margin:6px 0 2px;text-transform:uppercase;letter-spacing:.3px}
+  #kbTagSelect{display:flex;flex-wrap:wrap;gap:7px}
+  #kbTagSelect .chip{border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;
+    border-radius:20px;padding:5px 13px;font-size:13px;font-family:inherit;transition:.12s}
+  #kbTagSelect .chip:hover{border-color:var(--accent)}
+  #kbTagSelect .chip.sel{background:var(--int);color:#fff;border-color:var(--int)}
+  .tag-add{display:flex;gap:8px;margin-top:4px}
+  .tag-add input{flex:1;font-family:inherit;font-size:13.5px;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+  .tag-add input:focus{outline:none;border-color:var(--accent)}
+  .kb-gallery-preview{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .kb-gallery-preview[hidden]{display:none}
+  .img-thumb{position:relative;width:108px;height:108px;border-radius:10px;overflow:hidden;border:1px solid var(--line)}
+  .img-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .img-thumb .rm{position:absolute;top:4px;right:4px;width:22px;height:22px;border:0;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;cursor:pointer;font-size:13px;line-height:1;display:flex;align-items:center;justify-content:center}
+  .article-gallery{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+  .article-gallery img{max-width:100%;max-height:300px;border-radius:12px;border:1px solid var(--line);object-fit:cover;cursor:zoom-in}
+
+  /* ---------- meetups / voting ---------- */
+  .meet-editor{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px;box-shadow:var(--shadow);margin-top:14px;display:flex;flex-direction:column;gap:10px}
+  .meet-editor[hidden]{display:none}
+  .opt-add{display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap;background:#f7f9fd;border:1px solid var(--line);border-radius:12px;padding:14px}
+  .range-field{display:flex;flex-direction:column;gap:6px}
+  .range-field .wholbl{margin:0}
+  .time-range-row{display:flex;align-items:center;gap:8px}
+  .time-range-row .dash{color:var(--ink-soft);font-size:13px}
+  .opt-add .kb-input{padding:9px 12px}
+  .time-in{width:120px;cursor:pointer}
+  #meetOptDate{width:160px}
+  .opt-add .btn-ghost{white-space:nowrap}
+  .opt-edit-list{display:flex;flex-direction:column;gap:7px}
+  .opt-edit-row{display:flex;align-items:center;gap:9px;background:#f4f6fb;border-radius:10px;padding:8px 12px;font-size:14px}
+  .opt-edit-row .x{margin-left:auto;border:0;background:none;color:#c0392b;cursor:pointer;font-size:16px;font-family:inherit}
+  .meet-list{display:flex;flex-direction:column;gap:14px;margin-top:16px}
+  .meet{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:18px;box-shadow:var(--shadow)}
+  .meet-head{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px}
+  .meet-title{font-size:16.5px;font-weight:600}
+  .meet-by{font-size:12.5px;color:var(--ink-soft);margin-top:2px}
+  .meet-actions{margin-left:auto;display:flex;gap:4px}
+  .meet-note{font-size:14px;color:#43506e;background:#f7f9fd;border-radius:10px;padding:9px 12px;border:1px solid var(--line);margin-bottom:12px;white-space:pre-wrap}
+  .meet-opts{display:flex;flex-direction:column;gap:9px}
+  .opt{position:relative;border:1px solid var(--line);border-radius:12px;padding:11px 14px;cursor:pointer;background:#fff;overflow:hidden;transition:.12s;font-family:inherit;text-align:left;width:100%}
+  .opt:hover{border-color:var(--accent)}
+  .opt.voted{border-color:var(--int);background:var(--int-bg)}
+  .opt .opt-fill{position:absolute;inset:0 auto 0 0;background:rgba(14,127,126,.10);z-index:0;transition:width .4s}
+  .opt .opt-row{position:relative;z-index:1;display:flex;align-items:center;gap:10px}
+  .opt .opt-label{font-size:14.5px;font-weight:500;color:var(--ink)}
+  .opt .opt-check{margin-left:auto;display:flex;align-items:center;gap:8px}
+  .opt .opt-count{font-size:13px;color:var(--ink-soft);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .opt.voted .opt-count{color:var(--int);font-weight:600}
+  .opt .tick{width:20px;height:20px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff}
+  .opt.voted .tick{background:var(--int);border-color:var(--int)}
+  .opt .opt-voters{position:relative;z-index:1;font-size:12px;color:var(--ink-soft);margin-top:6px;display:flex;flex-wrap:wrap;gap:4px}
+  .opt.win{box-shadow:0 0 0 2px var(--gold) inset}
+  .win-badge{display:inline-block;background:var(--gold);color:#1a1a1a;font-size:11px;font-weight:700;border-radius:6px;padding:1px 7px;margin-left:8px}
+  .meet-foot{font-size:12.5px;color:var(--ink-soft);margin-top:11px;border-top:1px dashed var(--line);padding-top:10px}
+
+  footer{text-align:center;color:#9aa6bf;font-size:12px;margin-top:40px}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <span class="badge">CDC 2026 · C</span>
+      <div>
+        <h1>สมาชิกกลุ่ม C</h1>
+        <div class="sub">รู้จักเพื่อนร่วมคอร์ส · สรุปเวลานัด · เสียงสะท้อนจากกลุ่ม</div>
+      </div>
+    </div>
+    <nav class="tabs">
+      <button data-tab="dir" class="active">👥 สมาชิก</button>
+      <button data-tab="board">📣 กระดานสนทนา</button>
+      <button data-tab="kb">📚 คลังความรู้</button>
+      <button data-tab="sched">🗓️ นัดเวลา</button>
+      <button data-tab="sug">💬 ข้อเสนอแนะ</button>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- ============ DIRECTORY ============ -->
+  <section class="panel active" id="dir">
+    <div class="toolbar">
+      <div class="searchrow">
+        <div class="search">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <input id="q" type="text" placeholder="ค้นหาชื่อ / ความสนใจ / ความรู้…" />
+        </div>
+        <button class="btn-filter" id="filterToggle">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h18M6 12h12M10 19h4"/></svg>
+          ตัวกรอง <span class="pill" id="fcount" style="display:none">0</span>
+        </button>
+      </div>
+      <div class="filters" id="filters"></div>
+    </div>
+    <div class="countline" id="count"></div>
+    <div class="grid" id="cards"></div>
+  </section>
+
+  <!-- ============ SCHEDULE ============ -->
+  <section class="panel" id="sched">
+    <div class="kb-bar">
+      <div>
+        <h2 class="kb-title">นัดหมายกลุ่ม</h2>
+        <p class="kb-sub">เสนอวัน-เวลา แล้วโหวตเลือกช่วงที่ทุกคนสะดวกร่วมกัน</p>
+      </div>
+      <button class="btn-primary" id="meetNew">+ เพิ่มการนัดใหม่</button>
+    </div>
+
+    <div class="meet-editor" id="meetEditor" hidden>
+      <div class="whorow"><span class="wholbl">ผู้สร้างนัด</span><select class="who" id="meetWho"></select></div>
+      <input id="meetTitle" class="kb-input" type="text" placeholder="ชื่อการนัด เช่น นัดติวรอบแรก / เจอกันจิบกาแฟ" />
+      <textarea id="meetNote" rows="2" class="kb-input" placeholder="รายละเอียดเพิ่มเติม (ไม่บังคับ)"></textarea>
+      <div class="opt-add">
+        <div class="range-field">
+          <span class="wholbl">วัน</span>
+          <input id="meetOptDate" class="kb-input" type="date" />
+        </div>
+        <div class="range-field">
+          <span class="wholbl">ช่วงเวลา</span>
+          <div class="time-range-row">
+            <input id="meetStart" class="kb-input time-in" type="time" step="900" value="18:00" />
+            <span class="dash">ถึง</span>
+            <input id="meetEnd" class="kb-input time-in" type="time" step="900" value="20:00" />
+          </div>
+        </div>
+        <button class="btn-ghost" id="meetOptAdd" type="button">+ เพิ่มตัวเลือกนี้</button>
+      </div>
+      <div class="opt-edit-list" id="meetOptList"></div>
+      <div class="composer-foot">
+        <span class="hint" id="meetHint"></span>
+        <div style="display:flex;gap:8px">
+          <button class="btn-ghost" id="meetCancel">ยกเลิก</button>
+          <button class="btn-primary" id="meetSave">สร้างการนัด</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="meet-list" id="meetList"></div>
+
+    <h2 class="raw-h" style="margin-top:28px">ภาพรวมเวลาที่ทุกคนสะดวก <span style="font-weight:400;color:var(--ink-soft);font-size:14px">(จากแบบฟอร์มลงทะเบียน)</span></h2>
+    <div class="verdict" id="verdict"></div>
+    <div class="sched-grid">
+      <div class="box"><h3>วันที่คนสะดวกมากที่สุด</h3><div id="dayBars"></div></div>
+      <div class="box"><h3>ช่วงเวลาที่คนสะดวกมากที่สุด</h3><div id="timeBars"></div></div>
+    </div>
+    <div class="box" style="margin-top:14px">
+      <h3>ความหนาแน่น วัน × เวลา <span style="font-weight:400;color:var(--ink-soft);font-size:13px">(ตัวเลข = จำนวนคนที่สะดวกทั้งวันและช่วงเวลานั้น)</span></h3>
+      <div class="heat-wrap"><table class="heat" id="heat"></table></div>
+    </div>
+  </section>
+
+  <!-- ============ DISCUSSION BOARD ============ -->
+  <section class="panel" id="board">
+    <div class="composer">
+      <div class="whorow">
+        <span class="wholbl">โพสต์ในนาม</span>
+        <select class="who" id="boardWho"></select>
+      </div>
+      <textarea id="boardText" rows="3" placeholder="แชร์ความคิด ตั้งคำถาม หรืออัปเดตอะไรสักหน่อย…"></textarea>
+      <div class="img-preview" id="boardImgPreview" hidden></div>
+      <div class="composer-foot">
+        <div class="foot-left">
+          <button type="button" class="btn-attach" id="boardImgBtn">📷 แนบรูป</button>
+          <input type="file" id="boardImgInput" accept="image/*" hidden />
+          <span class="hint" id="boardHint"></span>
+        </div>
+        <button class="btn-primary" id="boardPost">โพสต์</button>
+      </div>
+    </div>
+    <div class="feed" id="feed"></div>
+  </section>
+
+  <!-- ============ KNOWLEDGE BASE ============ -->
+  <section class="panel" id="kb">
+    <div class="kb-bar">
+      <div>
+        <h2 class="kb-title">คลังความรู้</h2>
+        <p class="kb-sub">รวมบทความ/โน้ตความรู้ที่เพื่อน ๆ ในกลุ่มช่วยกันเขียน</p>
+      </div>
+      <button class="btn-primary" id="kbNew">+ เขียนบทความ</button>
+    </div>
+
+    <div class="kb-tools">
+      <div class="search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="kbQ" type="text" placeholder="ค้นหาบทความ (หัวข้อ / เนื้อหา / ผู้เขียน)…" />
+      </div>
+      <div class="kb-tagfilter" id="kbTagFilter"></div>
+    </div>
+
+    <div class="kb-editor" id="kbEditor" hidden>
+      <div class="whorow">
+        <span class="wholbl">ผู้เขียน</span>
+        <select class="who" id="kbWho"></select>
+      </div>
+      <input id="kbTitle" class="kb-input" type="text" placeholder="หัวข้อบทความ เช่น สรุปวิธีอ่านงบกระแสเงินสด" />
+      <div class="tag-select">
+        <span class="wholbl">เลือกแท็ก (กดเลือกได้หลายอัน)</span>
+        <div id="kbTagSelect"></div>
+        <div class="tag-add">
+          <input id="kbTagCustom" type="text" placeholder="เพิ่มแท็กเอง…" />
+          <button type="button" class="btn-ghost" id="kbTagAddBtn">+ เพิ่มแท็ก</button>
+        </div>
+      </div>
+      <textarea id="kbBody" rows="9" class="kb-input" placeholder="เนื้อหา… (ขึ้นบรรทัดใหม่ได้ตามปกติ)"></textarea>
+      <div class="kb-gallery-preview" id="kbImgPreview" hidden></div>
+      <div class="composer-foot">
+        <div class="foot-left">
+          <button type="button" class="btn-attach" id="kbImgBtn">📷 เพิ่มรูป</button>
+          <input type="file" id="kbImgInput" accept="image/*" multiple hidden />
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn-ghost" id="kbCancel">ยกเลิก</button>
+          <button class="btn-primary" id="kbSave">เผยแพร่</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="kb-list" id="kbList"></div>
+  </section>
+
+  <!-- ============ SUGGESTIONS ============ -->
+  <section class="panel" id="sug">
+    <div class="note">
+      <span>🔒</span>
+      <span>ข้อเสนอแนะทั้งหมดแสดงแบบ<b>ไม่ระบุตัวผู้เขียน</b> และสุ่มลำดับไว้ เพื่อให้ทุกคนพูดได้อย่างสบายใจ</span>
+    </div>
+    <h2 class="raw-h" style="margin-top:18px">ประเด็นที่มีนัยสำคัญ (คนพูดถึงเยอะ)</h2>
+    <div class="theme-grid" id="themes"></div>
+    <h2 class="raw-h">ข้อเสนอแนะทั้งหมด (<span id="sugn"></span> ข้อ)</h2>
+    <div class="raw-list" id="rawSug"></div>
+  </section>
+
+  <footer>
+    CDC 2026 — กลุ่ม C · <span id="memcount"></span> สมาชิก · snapshot ฝังในไฟล์ (รันใหม่ด้วย build_data.py เมื่อมีคนกรอกเพิ่ม)
+  </footer>
+</div>
+
+<!-- modal ยืนยันการลบ -->
+<div class="modal-overlay" id="confirmModal" hidden>
+  <div class="modal">
+    <div class="modal-title" id="confirmTitle">ยืนยันการลบ</div>
+    <div class="modal-msg" id="confirmMsg"></div>
+    <div class="modal-actions">
+      <button class="btn-ghost" id="confirmNo">ยกเลิก</button>
+      <button class="btn-danger" id="confirmYes">ลบ</button>
+    </div>
+  </div>
+</div>
+
+<!-- modal เลือกตัวตน (เด้งเมื่อยังไม่ได้เลือกชื่อ) -->
+<div class="modal-overlay" id="whoModal" hidden>
+  <div class="modal">
+    <div class="modal-title">คุณคือใคร?</div>
+    <div class="modal-msg">เลือกชื่อของคุณก่อน เพื่อโพสต์/คอมเมนต์/โหวตในนามนี้ (เปลี่ยนทีหลังได้ที่ช่องด้านบน)</div>
+    <select class="who modal-who" id="whoModalSelect"></select>
+    <div class="modal-actions">
+      <button class="btn-ghost" id="whoModalCancel">ยกเลิก</button>
+      <button class="btn-primary" id="whoModalOk">ยืนยัน</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===================================================================
+   ตั้งค่า FIREBASE — วาง config จาก Firebase Console ตรงนี้เพื่อเปิดโหมด "แชร์จริง realtime"
+   ถ้าปล่อยเป็น null จะใช้ localStorage (เก็บในเครื่องตัวเอง ไม่แชร์ — เหมาะแค่ลองใช้)
+   วิธีเอา config: Firebase Console → Project settings → "Your apps" → Web app → SDK config
+   ตัวอย่าง:
+   window.FIREBASE_CONFIG = {
+     apiKey:"AIza...", authDomain:"xxx.firebaseapp.com", projectId:"xxx",
+     storageBucket:"xxx.appspot.com", messagingSenderId:"123", appId:"1:123:web:abc"
+   };
+=================================================================== */
+window.FIREBASE_CONFIG = {
+  apiKey: "AIzaSyCypQePaQqJLFcXYRdmN57x1e0O6RlDJ1s",
+  authDomain: "cdc-gropc.firebaseapp.com",
+  projectId: "cdc-gropc",
+  storageBucket: "cdc-gropc.firebasestorage.app",
+  messagingSenderId: "930085426924",
+  appId: "1:930085426924:web:c4a27b4b4a61ff264377c9"
+};
+
+const CDC_DATA = /*DATA_START*/{
+  "members": [
+    {
+      "line": "Thidarut",
+      "name": "กี้",
+      "days": [
+        "เสาร์",
+        "อาทิตย์"
+      ],
+      "times": [
+        "เช้า (08-12)",
+        "บ่าย (12-17)",
+        "เย็น (17-20)",
+        "ค่ำ (20-23)"
+      ],
+      "skills": [
+        "หุ้น US",
+        "คริปโต/Bitcoin",
+        "หุ้นไทย",
+        "เศรษฐศาสตร์",
+        "ทองคำ"
+      ],
+      "interests": [
+        "Bitcoin/Self-custody",
+        "Value Investing",
+        "วางแผนการเงิน",
+        "จิตวิทยาการลงทุน",
+        "บริหารพอร์ต",
+        "พื้นฐานการลงทุน",
+        "อ่านงบการเงิน"
+      ],
+      "about": "สนใจลงทุนระยะยาว โดยนำเทคนิคการเทรดเข้ามาประยุกต์ใช้",
+      "avatar": ""
+    },
+    {
+      "line": "A",
+      "name": "Atom",
+      "days": [
+        "เสาร์",
+        "อาทิตย์"
+      ],
+      "times": [
+        "ค่ำ (20-23)"
+      ],
+      "skills": [
+        "หุ้น US",
+        "คริปโต/Bitcoin",
+        "เทคนิคอล",
+        "หุ้นไทย",
+        "กองทุน"
+      ],
+      "interests": [
+        "บริหารพอร์ต",
+        "พื้นฐานการลงทุน",
+        "เทรดระยะสั้น"
+      ],
+      "about": "สนใจในการใช้ mindset ในการมาปรับใช้กับการเทรดของตัวเอง + การใช้เครื่องมือต่างๆ",
+      "avatar": ""
+    },
+    {
+      "line": "Noo",
+      "name": "หนู",
+      "days": [
+        "อังคาร",
+        "พฤหัส",
+        "เสาร์"
+      ],
+      "times": [
+        "เย็น (17-20)"
+      ],
+      "skills": [
+        "คริปโต/Bitcoin",
+        "งบการเงิน",
+        "ทองคำ",
+        "หุ้น US",
+        "หุ้นไทย",
+        "พื้นฐานปัจจัย"
+      ],
+      "interests": [
+        "วางแผนการเงิน",
+        "จิตวิทยาการลงทุน",
+        "บริหารพอร์ต",
+        "พื้นฐานการลงทุน"
+      ],
+      "about": "ปัจจุบันออม Bitcoin เป็นหลัก สนใจพัฒนาทักษะสร้างพอร์ตการลงทุน สำหรับเทรดหลังจากเกษียณจากงานประจำ (ตั้งเป้าอีกภายใน 5 ปี)",
+      "avatar": ""
+    },
+    {
+      "line": "P📯🎶koopoko🔅🧸",
+      "name": "จอย",
+      "days": [
+        "เสาร์",
+        "อาทิตย์"
+      ],
+      "times": [
+        "เย็น (17-20)"
+      ],
+      "skills": [
+        "หุ้นไทย",
+        "หุ้น US",
+        "กองทุน"
+      ],
+      "interests": [
+        "พื้นฐานการลงทุน",
+        "เทรดระยะสั้น",
+        "วางแผนการเงิน",
+        "Passive Income",
+        "Value Investing",
+        "Bitcoin/Self-custody",
+        "อ่านงบการเงิน",
+        "บริหารพอร์ต",
+        "จิตวิทยาการลงทุน",
+        "ภาษี/มรดก",
+        "AI",
+        "Bot"
+      ],
+      "about": "สนใจลงทุนระยะยาว option, feature และระบบ+ความรู้พื้นฐานที่สามารถนำมาหา passive income ไปตลอดชีวิตค่ะ",
+      "avatar": ""
+    },
+    {
+      "line": "Joe",
+      "name": "โจ",
+      "days": [
+        "เสาร์"
+      ],
+      "times": [
+        "เช้า (08-12)",
+        "บ่าย (12-17)",
+        "เย็น (17-20)"
+      ],
+      "skills": [
+        "มือใหม่หมด",
+        "กองทุน",
+        "หุ้นไทย",
+        "ออปชั่น/ฟิวเจอร์ส",
+        "คริปโต/Bitcoin",
+        "ทองคำ",
+        "งบการเงิน"
+      ],
+      "interests": [
+        "พื้นฐานการลงทุน"
+      ],
+      "about": "",
+      "avatar": ""
+    },
+    {
+      "line": "Jump",
+      "name": "จั้ม",
+      "days": [
+        "จันทร์",
+        "อังคาร",
+        "ศุกร์",
+        "เสาร์"
+      ],
+      "times": [
+        "เช้า (08-12)"
+      ],
+      "skills": [
+        "มือใหม่หมด"
+      ],
+      "interests": [
+        "พื้นฐานการลงทุน",
+        "Value Investing",
+        "เทรดระยะสั้น",
+        "วางแผนการเงิน",
+        "Passive Income",
+        "Bitcoin/Self-custody",
+        "อ่านงบการเงิน",
+        "จิตวิทยาการลงทุน",
+        "บริหารพอร์ต",
+        "ภาษี/มรดก"
+      ],
+      "about": "ไม่มีความรู้และสนใจเรื่องการเงิน การ Trade และการลงทุน มาก่อนเลยเพราะไม่ชอบเรื่องตัวเลข วันนี้อยากลองเรียนรู้การ Trade และการลงทุนดูครับ",
+      "avatar": ""
+    },
+    {
+      "line": "Peaknine",
+      "name": "ยอด",
+      "days": [
+        "เสาร์"
+      ],
+      "times": [
+        "เย็น (17-20)"
+      ],
+      "skills": [
+        "หุ้นไทย",
+        "มือใหม่หมด",
+        "เทคนิคอล"
+      ],
+      "interests": [
+        "บริหารพอร์ต",
+        "จิตวิทยาการลงทุน"
+      ],
+      "about": "พนักงานเอกชน เทรดงงๆเหมือนมวยวัด",
+      "avatar": ""
+    },
+    {
+      "line": "Wichai Ngow",
+      "name": "โหงว",
+      "days": [
+        "อังคาร",
+        "จันทร์",
+        "พุธ",
+        "พฤหัส",
+        "ศุกร์",
+        "เสาร์",
+        "อาทิตย์"
+      ],
+      "times": [
+        "เย็น (17-20)"
+      ],
+      "skills": [
+        "งบการเงิน",
+        "อสังหา"
+      ],
+      "interests": [
+        "พื้นฐานการลงทุน",
+        "Value Investing",
+        "Bitcoin/Self-custody",
+        "เทรดระยะสั้น",
+        "วางแผนการเงิน",
+        "จิตวิทยาการลงทุน",
+        "บริหารพอร์ต"
+      ],
+      "about": "เป็นอดีตผู้บริหารองค์กรสายเทคที่เกษียณแล้ว อยากเริ่มการลงทุนอย่างจริงจังเพื่อรักษาและเพิ่มทรัพย์สินที่มีอยู่ให้สามารถใช้ในยามเกษียณอย่างไม่ต้องมีขีดจำกัด มีพอร์ท crypto, อสังหา, ทอง, กองทุนอยู่ แต่ยังไม่เคย trade หุ้น สามารถใช้ computer และ AI ได้อย่างดี",
+      "avatar": ""
+    },
+    {
+      "line": "Jack",
+      "name": "Jack",
+      "days": [
+        "ศุกร์",
+        "เสาร์",
+        "อาทิตย์",
+        "พฤหัส"
+      ],
+      "times": [
+        "บ่าย (12-17)"
+      ],
+      "skills": [
+        "หุ้นไทย",
+        "คริปโต/Bitcoin",
+        "ออปชั่น/ฟิวเจอร์ส",
+        "ทองคำ"
+      ],
+      "interests": [
+        "วางแผนการเงิน",
+        "เทรดระยะสั้น",
+        "Passive Income",
+        "จิตวิทยาการลงทุน",
+        "บริหารพอร์ต"
+      ],
+      "about": "ตอนนี้สนใจใน หุ้นไทย set50 กองทุน TFEX เพื่อนๆพี่ๆท่านไหนมีประสบการณ์แนะนำำได้ครับผม",
+      "avatar": ""
+    },
+    {
+      "line": "Sun Siawara1998.com",
+      "name": "ซัน",
+      "days": [
+        "จันทร์",
+        "อังคาร",
+        "พุธ",
+        "พฤหัส",
+        "ศุกร์"
+      ],
+      "times": [
+        "ค่ำ (20-23)"
+      ],
+      "skills": [
+        "หุ้นไทย",
+        "กองทุน",
+        "คริปโต/Bitcoin",
+        "ออปชั่น/ฟิวเจอร์ส",
+        "เทคนิคอล",
+        "อสังหา",
+        "ทองคำ"
+      ],
+      "interests": [
+        "วางแผนการเงิน",
+        "จิตวิทยาการลงทุน",
+        "บริหารพอร์ต",
+        "Bitcoin/Self-custody"
+      ],
+      "about": "ประสบการ์หุ้นไทย+TFEX ใช้ระบบคุณลุงมา 15ปี บิตคอยเคยเทรดฟิวเจอร์ เมื่อ10ปีที่แล้ว ใช้Leverage คิดว่าไม่เหมาะกับตัวเองจึงเน้นDCA ทอง และวางแผนDCA บิตคอยเพิ่มครับ ใช้Tecnicalเป็นหลัก ส่วนพอร์ตหุ้นเน้นปันผลเพื่อวางระยะยาวด้วยครับ ความรู้พื้นฐานพออยู่รอดได้มีอะไรแนะนำได้ครับ ประสบการณ์การใช้โปรแกรม Tadingview / Metastock / Amibroker ระดับน้อย-กลางๆ",
+      "avatar": ""
+    },
+    {
+      "line": "ponpol",
+      "name": "พล",
+      "days": [
+        "อาทิตย์"
+      ],
+      "times": [
+        "ค่ำ (20-23)"
+      ],
+      "skills": [
+        "หุ้น US",
+        "คริปโต/Bitcoin",
+        "ทองคำ",
+        "อสังหา"
+      ],
+      "interests": [
+        "พื้นฐานการลงทุน",
+        "วางแผนการเงิน",
+        "อ่านงบการเงิน",
+        "จิตวิทยาการลงทุน"
+      ],
+      "about": "",
+      "avatar": ""
+    },
+    {
+      "line": "GuyZ☆Strong HODL",
+      "name": "กาย",
+      "days": [
+        "จันทร์",
+        "พฤหัส",
+        "พุธ",
+        "อังคาร",
+        "ศุกร์"
+      ],
+      "times": [
+        "เช้า (08-12)"
+      ],
+      "skills": [
+        "พื้นฐานปัจจัย",
+        "คริปโต/Bitcoin",
+        "งบการเงิน",
+        "หุ้นไทย",
+        "กองทุน",
+        "เศรษฐศาสตร์"
+      ],
+      "interests": [
+        "วางแผนการเงิน",
+        "บริหารพอร์ต",
+        "จิตวิทยาการลงทุน",
+        "ภาษี/มรดก",
+        "เทรดระยะสั้น"
+      ],
+      "about": "ฝากเนื้อฝากตัวด้วยครับ ผมอยู่จังหวัดเพชรบุรีครับ มีอะไรแนะนำได้ครับ",
+      "avatar": ""
+    },
+    {
+      "line": "Nampetch",
+      "name": "น้ำเพชร",
+      "days": [
+        "จันทร์",
+        "อังคาร",
+        "พุธ",
+        "พฤหัส",
+        "ศุกร์",
+        "เสาร์"
+      ],
+      "times": [
+        "เช้า (08-12)",
+        "บ่าย (12-17)"
+      ],
+      "skills": [
+        "หุ้นไทย",
+        "หุ้น US",
+        "คริปโต/Bitcoin",
+        "เศรษฐศาสตร์",
+        "พื้นฐานปัจจัย",
+        "งบการเงิน"
+      ],
+      "interests": [
+        "บริหารพอร์ต",
+        "จิตวิทยาการลงทุน",
+        "Bitcoin/Self-custody",
+        "พื้นฐานการลงทุน",
+        "Value Investing",
+        "เทรดระยะสั้น",
+        "Passive Income",
+        "ภาษี/มรดก",
+        "อ่านงบการเงิน",
+        "วางแผนการเงิน"
+      ],
+      "about": "สนใจสร้าง Cashflow อยากได้กลุ่มเพื่อนๆ กระตุ้นการลงทุน Trade ไปพร้อมๆกัน",
+      "avatar": ""
+    },
+    {
+      "line": "Macky sukhum",
+      "name": "Mac",
+      "days": [
+        "เสาร์",
+        "อาทิตย์"
+      ],
+      "times": [
+        "บ่าย (12-17)"
+      ],
+      "skills": [
+        "หุ้นไทย",
+        "หุ้น US",
+        "งบการเงิน",
+        "พื้นฐานปัจจัย",
+        "เทคนิคอล",
+        "ทองคำ",
+        "เศรษฐศาสตร์"
+      ],
+      "interests": [
+        "วางแผนการเงิน",
+        "จิตวิทยาการลงทุน",
+        "บริหารพอร์ต",
+        "Passive Income"
+      ],
+      "about": "สนใจวางระบบ และสร้าง portfolio",
+      "avatar": ""
+    },
+    {
+      "line": "โชติชัย",
+      "name": "โชติ",
+      "days": [
+        "เสาร์",
+        "อาทิตย์"
+      ],
+      "times": [
+        "เช้า (08-12)",
+        "บ่าย (12-17)"
+      ],
+      "skills": [
+        "มือใหม่หมด"
+      ],
+      "interests": [
+        "พื้นฐานการลงทุน",
+        "Bitcoin/Self-custody",
+        "เทรดระยะสั้น",
+        "Value Investing",
+        "วางแผนการเงิน",
+        "Passive Income",
+        "จิตวิทยาการลงทุน",
+        "อ่านงบการเงิน",
+        "ภาษี/มรดก",
+        "บริหารพอร์ต"
+      ],
+      "about": "",
+      "avatar": ""
+    },
+    {
+      "line": "Geng+",
+      "name": "เก๋ง",
+      "days": [
+        "อังคาร",
+        "พุธ",
+        "พฤหัส"
+      ],
+      "times": [
+        "บ่าย (12-17)"
+      ],
+      "skills": [
+        "หุ้นไทย",
+        "หุ้น US",
+        "กองทุน",
+        "คริปโต/Bitcoin",
+        "ออปชั่น/ฟิวเจอร์ส",
+        "เทคนิคอล",
+        "ทองคำ",
+        "เศรษฐศาสตร์"
+      ],
+      "interests": [
+        "จิตวิทยาการลงทุน",
+        "บริหารพอร์ต",
+        "Bitcoin/Self-custody"
+      ],
+      "about": "สนใจลงทุนระยะยาว และสร้างกระแสเงินสด",
+      "avatar": ""
+    },
+    {
+      "line": "Mai",
+      "name": "ไม้",
+      "days": [
+        "พฤหัส"
+      ],
+      "times": [
+        "ค่ำ (20-23)"
+      ],
+      "skills": [
+        "หุ้นไทย"
+      ],
+      "interests": [
+        "Bitcoin/Self-custody",
+        "อ่านงบการเงิน"
+      ],
+      "about": "",
+      "avatar": ""
+    },
+    {
+      "line": "John Teerasak",
+      "name": "John",
+      "days": [
+        "เสาร์",
+        "อาทิตย์",
+        "อังคาร",
+        "พุธ",
+        "ศุกร์"
+      ],
+      "times": [
+        "ค่ำ (20-23)"
+      ],
+      "skills": [
+        "กองทุน",
+        "ทองคำ"
+      ],
+      "interests": [
+        "จิตวิทยาการลงทุน",
+        "บริหารพอร์ต",
+        "วางแผนการเงิน",
+        "พื้นฐานการลงทุน",
+        "Bitcoin/Self-custody"
+      ],
+      "about": "ปัจจุบันลงเป็นกองทุน, ไม่ได้ลงหุ้นรายตัว, สนใจเรียน technical , ตอนนี้ทำงานอยู่ที่อินโดนีเซียอาจไม่สะดวกเจอเพื่อนๆนะครับแต่เจอ offline",
+      "avatar": ""
+    },
+    {
+      "line": "Title",
+      "name": "ไตเติ้ล",
+      "days": [
+        "เสาร์",
+        "อาทิตย์",
+        "ศุกร์",
+        "จันทร์",
+        "อังคาร",
+        "พุธ",
+        "พฤหัส"
+      ],
+      "times": [
+        "เย็น (17-20)",
+        "ค่ำ (20-23)"
+      ],
+      "skills": [
+        "หุ้นไทย",
+        "คริปโต/Bitcoin",
+        "ออปชั่น/ฟิวเจอร์ส",
+        "เทคนิคอล",
+        "ทองคำ"
+      ],
+      "interests": [
+        "เทรดระยะสั้น",
+        "วางแผนการเงิน",
+        "Passive Income",
+        "จิตวิทยาการลงทุน",
+        "บริหารพอร์ต"
+      ],
+      "about": "ข้าราชการ รพ.ชลบุรี จ.ชลบุรี",
+      "avatar": ""
+    },
+    {
+      "line": "Mark",
+      "name": "ธรรมจร",
+      "days": [
+        "จันทร์",
+        "อังคาร",
+        "พุธ",
+        "พฤหัส",
+        "ศุกร์"
+      ],
+      "times": [
+        "เย็น (17-20)"
+      ],
+      "skills": [
+        "คริปโต/Bitcoin",
+        "ออปชั่น/ฟิวเจอร์ส"
+      ],
+      "interests": [
+        "จิตวิทยาการลงทุน",
+        "บริหารพอร์ต"
+      ],
+      "about": "สนใจลงทุนระยะยาวแบบhybrid เอาtechnicalมาช่วยในการตัดสินใจเข้าorder อยากเข้าใจจิตวิทยาการลงทุน เพื่อทำให้จิตใจมั่นคงขึ้น",
+      "avatar": ""
+    },
+    {
+      "line": "Tape",
+      "name": "เทป",
+      "days": [
+        "เสาร์",
+        "อาทิตย์"
+      ],
+      "times": [
+        "ค่ำ (20-23)"
+      ],
+      "skills": [
+        "คริปโต/Bitcoin",
+        "เทคนิคอล",
+        "Tech"
+      ],
+      "interests": [
+        "บริหารพอร์ต",
+        "จิตวิทยาการลงทุน",
+        "พื้นฐานการลงทุน",
+        "Money Management",
+        "Indicator / Chart Pattern / Elliott Wave"
+      ],
+      "about": "- ชื่อเทปนะครับ อายุ 35 ปี ทำงานสาย Tech - สนใจ Bitcoin + การลงทุนแบบ Systematic - ปีนี้เพิ่งลาออกมา เพื่อเดินทางตามเส้นทางของตัวเอง",
+      "avatar": ""
+    },
+    {
+      "line": "Yod",
+      "name": "ยอด",
+      "days": [
+        "อาทิตย์"
+      ],
+      "times": [
+        "เย็น (17-20)"
+      ],
+      "skills": [
+        "เศรษฐศาสตร์"
+      ],
+      "interests": [
+        "บริหารพอร์ต"
+      ],
+      "about": "",
+      "avatar": ""
+    },
+    {
+      "line": "Nuphap",
+      "name": "ต้า",
+      "days": [
+        "อังคาร",
+        "พฤหัส",
+        "เสาร์"
+      ],
+      "times": [
+        "ค่ำ (20-23)"
+      ],
+      "skills": [
+        "หุ้นไทย",
+        "หุ้น US",
+        "คริปโต/Bitcoin",
+        "ทองคำ"
+      ],
+      "interests": [
+        "พื้นฐานการลงทุน",
+        "Bitcoin/Self-custody",
+        "เทรดระยะสั้น",
+        "วางแผนการเงิน",
+        "จิตวิทยาการลงทุน",
+        "บริหารพอร์ต",
+        "Technical"
+      ],
+      "about": "สนใจการสร้างระบบการลงทุนที่ยั่งยืน เหมาะกับตัวเอง และมี community แลกเปลี่ยนมุมมอง และความรู้ทั้งในเชิง technical และ mindset ครับ",
+      "avatar": ""
+    },
+    {
+      "line": "Earth Settaphat",
+      "name": "เอิร์ธ",
+      "days": [
+        "จันทร์",
+        "เสาร์",
+        "อาทิตย์",
+        "อังคาร",
+        "พุธ",
+        "พฤหัส",
+        "ศุกร์"
+      ],
+      "times": [
+        "เย็น (17-20)",
+        "ค่ำ (20-23)"
+      ],
+      "skills": [
+        "หุ้นไทย",
+        "หุ้น US",
+        "คริปโต/Bitcoin",
+        "งบการเงิน",
+        "พื้นฐานปัจจัย",
+        "เทคนิคอล",
+        "เศรษฐศาสตร์"
+      ],
+      "interests": [
+        "Bitcoin/Self-custody",
+        "จิตวิทยาการลงทุน",
+        "พื้นฐานการลงทุน",
+        "บริหารพอร์ต"
+      ],
+      "about": "สวัสดีครับ ชื่อเอิร์ธนะครับ ชอบลงทุนและ Bitcoin",
+      "avatar": ""
+    },
+    {
+      "line": "krisadayoo",
+      "name": "กฤษ",
+      "days": [
+        "ศุกร์",
+        "เสาร์",
+        "อาทิตย์"
+      ],
+      "times": [
+        "เช้า (08-12)",
+        "บ่าย (12-17)",
+        "ค่ำ (20-23)",
+        "เย็น (17-20)"
+      ],
+      "skills": [
+        "คริปโต/Bitcoin",
+        "ออปชั่น/ฟิวเจอร์ส",
+        "เทคนิคอล",
+        "ทองคำ"
+      ],
+      "interests": [
+        "พื้นฐานการลงทุน",
+        "Value Investing",
+        "เทรดระยะสั้น",
+        "Passive Income",
+        "วางแผนการเงิน",
+        "Bitcoin/Self-custody",
+        "อ่านงบการเงิน",
+        "จิตวิทยาการลงทุน",
+        "ภาษี/มรดก",
+        "บริหารพอร์ต"
+      ],
+      "about": "ผมชื่อกฤษ เคยเรียน cdc 2011 ส่วนตัวเทรด fx คริปโต ทอง ใช้เทคนิเคิลเป็นหลัก แต่ก็อ่านข่าวและฟังบทวิเคราะห์เป็นประจำ โดยเฉพาะภาพ macro งานอดิเรกชอบปั่นจักรยาน ออกกำลังกายบ้าง และเล่นเครื่องเสียง",
+      "avatar": ""
+    },
+    {
+      "line": "Suthee",
+      "name": "อุ่ย",
+      "days": [
+        "จันทร์",
+        "อังคาร",
+        "พุธ",
+        "พฤหัส",
+        "ศุกร์",
+        "เสาร์",
+        "อาทิตย์"
+      ],
+      "times": [
+        "ค่ำ (20-23)"
+      ],
+      "skills": [
+        "มือใหม่หมด"
+      ],
+      "interests": [
+        "พื้นฐานการลงทุน",
+        "Bitcoin/Self-custody",
+        "อ่านงบการเงิน",
+        "จิตวิทยาการลงทุน",
+        "ภาษี/มรดก",
+        "Value Investing",
+        "เทรดระยะสั้น",
+        "บริหารพอร์ต",
+        "วางแผนการเงิน",
+        "Passive Income"
+      ],
+      "about": "สนใจเรียนรู้การเทาดแบบเทคนิคคอล",
+      "avatar": ""
+    }
+  ],
+  "suggestions": [
+    "อยากเจอพี่ๆครับ",
+    "นัดเจอดื่มกาแฟ ทานข้าวน่าสนใจครับ",
+    "นัดเจอ offline กันบ้างก็ดีนะคะ ได้สนิทกันไวขึ้นและช่วยเหลือซึ่งกันและกัน",
+    "อยากให้มีนัดเจอออฟไลน์ เดือนละครั้ง จะได้รู้จักกันมากขึ้น",
+    "มาแชร์ความรู้ในด้านที่ตนเองสนใจบ้างก็ดี",
+    "นอกจากการได้มี session ในการสรุปเนื้อหากหลังเรียนแล้ว น่าจะให้มีการขอให้ผู้ที่เชี่ยวชาญด้านเทคนิคหรือโปรแกรมในกลุ่มที่สามารถสอนผู้ที่ยังตามไม่ทันแต่ละเรื่องสอนนอกรอบตามความเหมาะสมและความสมัครใจ",
+    "Offline ทุกอาทิตย์ที่ไม่มีการสอน",
+    "อยากมี Offline meeting เรื่อยๆ",
+    "ปัจจุบันมีความจำเป็นต้องดูแลคุณแม่ที่ติดเตียง เรื่องเวลาจะพบกัน Offline ต้องดูเป็นครั้งๆไปครับ",
+    "นัดเจอonsite เดือนละครั้ง",
+    "อยากให้มีการวิเคราะห์เสนอแนะการลงทุนเดือนละครั้ง",
+    "นัดเจอกลุ่มนอกสถานที่เพื่อและเปลี่ยนความรู้และพัฒนากันไปอย่างมีประสิทธิภาพ",
+    "3ครั้ง",
+    "ถ้าสะดวกนัด offline ในการช่วยกันเรียน ทำการบ้านซักครั้ง"
+  ],
+  "count": 26
+}/*DATA_END*/;
+
+/* ลำดับมาตรฐานของวัน/เวลา สำหรับการเรียงและ heatmap */
+const DAY_ORDER  = ["จันทร์","อังคาร","พุธ","พฤหัส","ศุกร์","เสาร์","อาทิตย์"];
+const TIME_ORDER = ["เช้า (08-12)","บ่าย (12-17)","เย็น (17-20)","ค่ำ (20-23)"];
+
+/* ประเด็นสรุป (curated) — major = นัยสำคัญสูง */
+const THEMES = [
+  {major:true, icon:"🤝", title:"นัดเจอ Offline", meta:"พูดถึงมากที่สุด", body:"เสียงส่วนใหญ่อยากให้มีนัดเจอนอกรอบเพื่อรู้จักและช่วยเหลือกัน ความถี่ที่เสนอ: เดือนละครั้ง / ทุกสัปดาห์ที่ไม่มีเรียน / ~3 ครั้ง (บางคนติดภาระต้องดูเป็นครั้ง ๆ ไป)"},
+  {major:false, icon:"📚", title:"Session สรุป + สอนนอกรอบ", meta:"พูดถึงหลายครั้ง", body:"อยากมีช่วงสรุปเนื้อหาหลังเรียน และให้คนที่เชี่ยวชาญด้านเทคนิค/โปรแกรมช่วยติวคนที่ตามไม่ทันตามความสมัครใจ"},
+  {major:false, icon:"📈", title:"วิเคราะห์การลงทุนร่วมกัน", meta:"ข้อเสนอเฉพาะ", body:"อยากให้มีการวิเคราะห์และเสนอแนะการลงทุนร่วมกันในกลุ่ม ประมาณเดือนละครั้ง"},
+];
+
+/* ---------- state ---------- */
+const state = {q:"", sel:{skills:new Set(),interests:new Set(),days:new Set(),times:new Set()}};
+
+/* ---------- helpers ---------- */
+/* avatar เป็นรูปสัตว์น่ารัก (emoji) สุ่มแบบคงที่จากชื่อ — คนเดิมได้สัตว์+สีเดิมเสมอ
+   ถ้าใส่ URL รูปจริงในฟิลด์ avatar จะแสดงรูปนั้นแทน */
+const ANIMALS = ["🐱","🐶","🐰","🦊","🐻","🐼","🐨","🐯","🦁","🐮","🐷","🐸","🐵","🐹","🐭","🦝","🐧","🐤","🦉","🦆","🐢","🐙","🦋","🐬","🐳","🦄","🦥","🦦","🐝","🐞"];
+function hashSeed(s){let h=0;for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return h;}
+function animalFor(m){const h=hashSeed((m&&(m.line||m.name))||"cdc");return{emoji:ANIMALS[h%ANIMALS.length],hue:h%360};}
+function avatarMarkup(m,display,size){
+  const cls="avatar"+(size?" "+size:"");
+  if(m&&m.avatar) return `<img class="${cls}" loading="lazy" src="${esc(m.avatar)}" alt="${esc(display)}" />`;
+  const a=animalFor(m);
+  return `<div class="${cls} emoji" style="background:hsl(${a.hue},70%,90%)" role="img" aria-label="${esc(display||"")}">${a.emoji}</div>`;
+}
+function tally(field){
+  const c={};
+  for(const m of CDC_DATA.members) for(const t of m[field]) c[t]=(c[t]||0)+1;
+  return c;
+}
+function sortedTags(field, order){
+  const c=tally(field);
+  let keys=Object.keys(c);
+  if(order) keys.sort((a,b)=>order.indexOf(a)-order.indexOf(b));
+  else keys.sort((a,b)=>c[b]-c[a]);
+  return keys.map(k=>[k,c[k]]);
+}
+
+/* ---------- build filter UI ---------- */
+function buildFilters(){
+  const groups=[
+    {key:"skills",   label:"ความรู้ที่มี", order:null},
+    {key:"interests",label:"สนใจเรื่อง",   order:null},
+    {key:"days",     label:"วันสะดวก",     order:DAY_ORDER},
+    {key:"times",    label:"เวลาสะดวก",    order:TIME_ORDER},
+  ];
+  const box=document.getElementById("filters");
+  box.innerHTML = groups.map(g=>`
+    <div class="fgroup">
+      <h4>${g.label}</h4>
+      <div class="chips">${
+        sortedTags(g.key,g.order).map(([t,n])=>
+          `<button class="chip" data-g="${g.key}" data-t="${esc(t)}">${esc(t)} <span class="n">${n}</span></button>`
+        ).join("")
+      }</div>
+    </div>`).join("") +
+    `<div class="filter-foot"><span style="font-size:13px;color:var(--ink-soft)">เลือกได้หลายอัน — ในกลุ่มเดียวกันคือ “หรือ”, ต่างกลุ่มคือ “และ”</span>
+     <button class="clearbtn" id="clearF">ล้างตัวกรอง</button></div>`;
+
+  box.querySelectorAll(".chip").forEach(ch=>ch.addEventListener("click",()=>{
+    const g=ch.dataset.g, t=ch.dataset.t, s=state.sel[g];
+    s.has(t)?s.delete(t):s.add(t);
+    ch.classList.toggle("sel");
+    render();
+  }));
+  document.getElementById("clearF").addEventListener("click",clearFilters);
+}
+function clearFilters(){
+  for(const k in state.sel) state.sel[k].clear();
+  document.querySelectorAll("#filters .chip.sel").forEach(c=>c.classList.remove("sel"));
+  render();
+}
+function activeFilterCount(){
+  return Object.values(state.sel).reduce((a,s)=>a+s.size,0);
+}
+
+/* ---------- match logic ---------- */
+function matches(m){
+  if(state.q){
+    const hay=(m.name+" "+m.line+" "+m.about+" "+m.skills.join(" ")+" "+m.interests.join(" ")).toLowerCase();
+    if(!hay.includes(state.q.toLowerCase())) return false;
+  }
+  for(const [g,s] of Object.entries(state.sel)){
+    if(s.size===0) continue;
+    let ok=false;
+    for(const t of s){ if(m[g].includes(t)){ok=true;break;} }
+    if(!ok) return false;          // ต่างกลุ่ม = AND
+  }
+  return true;
+}
+
+/* ---------- render directory ---------- */
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));}
+function isHit(g,t){return state.sel[g].has(t);}
+
+function render(){
+  const list=CDC_DATA.members.filter(matches);
+  document.getElementById("count").innerHTML=`พบ <b>${list.length}</b> คน${activeFilterCount()||state.q?` จากทั้งหมด ${CDC_DATA.members.length}`:""}`;
+  const fc=document.getElementById("fcount"), af=activeFilterCount();
+  fc.style.display=af?"inline-block":"none"; fc.textContent=af;
+  document.getElementById("filterToggle").classList.toggle("on",af>0);
+
+  const grid=document.getElementById("cards");
+  if(!list.length){grid.innerHTML=`<div class="empty">ไม่พบสมาชิกที่ตรงกับเงื่อนไข<br>ลองลดตัวกรองดูนะ</div>`;return;}
+  grid.innerHTML=list.map(m=>{
+    const display=m.name||m.line||"ไม่ระบุชื่อ";
+    const lineTxt=m.line&&m.line!==display?m.line:"";
+    return `<div class="card">
+      <div class="head">
+        ${avatarMarkup(m,display)}
+        <div>
+          <div class="name">${esc(display)}</div>
+          ${lineTxt?`<div class="line"><span class="ic">LINE</span> ${esc(lineTxt)}</div>`:""}
+        </div>
+      </div>
+      ${m.about?`<div class="about">${esc(m.about)}</div>`:""}
+      ${m.skills.length?`<div class="sect"><span class="lbl">ความรู้ที่มี</span><div class="tagrow">${
+        m.skills.map(t=>`<span class="tag skill ${isHit('skills',t)?'hit':''}">${esc(t)}</span>`).join("")}</div></div>`:""}
+      ${m.interests.length?`<div class="sect"><span class="lbl">สนใจเรื่อง</span><div class="tagrow">${
+        m.interests.map(t=>`<span class="tag int ${isHit('interests',t)?'hit':''}">${esc(t)}</span>`).join("")}</div></div>`:""}
+      ${(m.days.length||m.times.length)?`<div class="when">${
+        [...m.days,...m.times].map(w=>`<span class="w">${esc(w)}</span>`).join("")}</div>`:""}
+    </div>`;
+  }).join("");
+}
+
+/* ---------- schedule ---------- */
+function bars(elId, pairs, total){
+  const max=Math.max(...pairs.map(p=>p[1]),1);
+  document.getElementById(elId).innerHTML=pairs.map(([t,n],i)=>`
+    <div class="bar ${i===0?'top':''}">
+      <span class="lbl">${esc(t.replace(/\s*\(.*\)/,""))}</span>
+      <div class="track"><div class="fill" style="width:${Math.round(n/max*100)}%"></div></div>
+      <span class="num">${n}</span>
+    </div>`).join("");
+}
+function buildSchedule(){
+  const days=sortedTags("days").sort((a,b)=>b[1]-a[1]);
+  const times=sortedTags("times").sort((a,b)=>b[1]-a[1]);
+  bars("dayBars", days);
+  bars("timeBars", times);
+
+  // heatmap day x time
+  const mat={};
+  for(const m of CDC_DATA.members)
+    for(const d of m.days) for(const t of m.times){ const k=d+"|"+t; mat[k]=(mat[k]||0)+1; }
+  let maxC=1; for(const k in mat) maxC=Math.max(maxC,mat[k]);
+  const presentDays=DAY_ORDER.filter(d=>CDC_DATA.members.some(m=>m.days.includes(d)));
+  const thLabel=t=>{const mm=t.match(/^(.*?)\s*(\(.*\))?\s*$/);
+    return esc(mm[1])+(mm[2]?`<br><small style="font-weight:400;color:#9aa6bf">${esc(mm[2])}</small>`:"");};
+  let html=`<tr><th></th>${TIME_ORDER.map(t=>`<th>${thLabel(t)}</th>`).join("")}</tr>`;
+  for(const d of presentDays){
+    html+=`<tr><th class="rowlbl">${d}</th>`+TIME_ORDER.map(t=>{
+      const n=mat[d+"|"+t]||0;
+      const a=n===0?0:.18+.82*(n/maxC);
+      const bg=`rgba(14,127,126,${a.toFixed(2)})`;
+      return `<td class="cell" style="background:${n?bg:'#f0f3f7'};color:${n?'#fff':'#c2cad8'}">${n||"·"}</td>`;
+    }).join("")+`</tr>`;
+  }
+  document.getElementById("heat").innerHTML=html;
+
+  // verdict — top 2 days + top 2 times
+  const topDays=days.slice(0,2).map(d=>d[0]);
+  const topTimes=times.slice(0,2).map(t=>t[0]);
+  document.getElementById("verdict").innerHTML=`
+    <h3>📌 ช่วงเวลาที่ลงตัวที่สุด</h3>
+    <p>วันที่คนสะดวกมากสุดคือ <b>${topDays.join(" และ ")}</b> ส่วนช่วงเวลาคือ <b>${topTimes.join(" / ")}</b><br>
+    แนะนำให้ตั้งนัดในชุดเวลาเหล่านี้ก่อน — ดูช่อง วัน×เวลา ที่สีเข้มสุดด้านล่างเพื่อหา slot ที่คนตรงกันมากที่สุด</p>
+    ${topDays.flatMap(d=>topTimes.map(t=>`<span class="slot">${d} · ${t.replace(/\s*\(.*\)/,"")}</span>`)).join("")}`;
+}
+
+/* ---------- suggestions ---------- */
+function buildSuggestions(){
+  document.getElementById("themes").innerHTML=THEMES.map(t=>`
+    <div class="theme ${t.major?'major':''}">
+      <div class="tt">${t.icon} ${esc(t.title)}</div>
+      <div class="mt">${esc(t.meta)}</div>
+      <p>${esc(t.body)}</p>
+    </div>`).join("");
+  document.getElementById("sugn").textContent=CDC_DATA.suggestions.length;
+  document.getElementById("rawSug").innerHTML=CDC_DATA.suggestions
+    .map(s=>`<div class="quote">${esc(s)}</div>`).join("");
+}
+
+/* ===================================================================
+   DATA LAYER — ตอนนี้เก็บใน localStorage (ในเครื่องของแต่ละคน)
+   จุดเดียวที่ต้องแก้เมื่อย้ายไป database จริง: ฟังก์ชันใน Store ข้างล่างนี้
+   (ดูหัวข้อ "ย้ายไป database" ใน README_directory.md)
+=================================================================== */
+const K={posts:"cdc_posts",articles:"cdc_articles",meetups:"cdc_meetups",me:"cdc_me"};
+const Store={
+  read(k,def){try{const v=JSON.parse(localStorage.getItem(k));return v==null?def:v;}catch(e){return def;}},
+  write(k,v){localStorage.setItem(k,JSON.stringify(v));},
+};
+let POSTS=[], ARTICLES=[], MEETUPS=[];
+let ME=Store.read(K.me,"");
+const openComments=new Set();           // จำว่าโพสต์ไหนเปิดคอมเมนต์อยู่ (คงสภาพข้าม re-render)
+let postEditId=null, postEditRemoveImg=false;   // สถานะแก้ไขโพสต์
+function setME(line){ME=line;Store.write(K.me,line);syncWho();renderFeed();renderKB();renderMeetups();}
+
+/* ---- ที่เก็บข้อมูล (Backend) ----
+   ถ้าใส่ window.FIREBASE_CONFIG (บนสุดของ <script>) → ใช้ Firestore แบบ realtime แชร์ข้ามเครื่อง
+   ถ้าไม่ใส่ → ใช้ localStorage (เก็บในเครื่องตัวเอง ไม่แชร์)
+   UI ทั้งหมดเรียกผ่าน Backend.* — สลับโหมดได้โดยไม่ต้องแตะส่วนแสดงผล */
+let Backend=null;
+function applyPosts(arr){POSTS=arr;renderFeed();}
+function applyArticles(arr){ARTICLES=arr;renderKB();}
+function applyMeetups(arr){MEETUPS=arr;renderMeetups();}
+function findPost(id){return POSTS.find(x=>x.id===id)||null;}
+function findMeetup(id){return MEETUPS.find(x=>x.id===id)||null;}
+window.__cdc={applyPosts,applyArticles,applyMeetups,findPost,findMeetup,setBackend(b){Backend=b;}}; // hook ให้โมดูล Firebase
+
+function initLocalBackend(){
+  const persist=()=>{Store.write(K.posts,POSTS);Store.write(K.articles,ARTICLES);Store.write(K.meetups,MEETUPS);};
+  Backend={
+    mode:"local",
+    addPost(p){POSTS.push({id:uid(),...p});persist();renderFeed();},
+    updatePost(id,patch){const p=findPost(id);if(!p)return;Object.assign(p,patch);persist();renderFeed();},
+    toggleLike(id,me){const p=findPost(id);if(!p)return;const i=p.likes.indexOf(me);i>=0?p.likes.splice(i,1):p.likes.push(me);persist();renderFeed();},
+    addComment(id,c){const p=findPost(id);if(!p)return;p.comments.push(c);persist();renderFeed();},
+    deletePost(id){POSTS=POSTS.filter(p=>p.id!==id);persist();renderFeed();},
+    addArticle(a){ARTICLES.push({id:uid(),...a});persist();renderKB();},
+    updateArticle(id,patch){const a=ARTICLES.find(x=>x.id===id);if(!a)return;Object.assign(a,patch);persist();renderKB();},
+    deleteArticle(id){ARTICLES=ARTICLES.filter(a=>a.id!==id);persist();renderKB();},
+    addMeetup(m){MEETUPS.push({id:uid(),...m});persist();renderMeetups();},
+    deleteMeetup(id){MEETUPS=MEETUPS.filter(m=>m.id!==id);persist();renderMeetups();},
+    voteMeetup(id,optId,me){const m=findMeetup(id);if(!m)return;m.votes=m.votes||{};const a=m.votes[optId]||[];const i=a.indexOf(me);i>=0?a.splice(i,1):a.push(me);m.votes[optId]=a;persist();renderMeetups();},
+  };
+  POSTS=Store.read(K.posts,[]);ARTICLES=Store.read(K.articles,[]);MEETUPS=Store.read(K.meetups,[]);
+  renderFeed();renderKB();renderMeetups();
+}
+function startBackend(){
+  if(window.FIREBASE_CONFIG){            // รอโมดูล Firebase ด้านล่าง setBackend + ส่ง snapshot เข้ามา
+    const msg=`<div class="empty-feed">กำลังเชื่อมต่อฐานข้อมูล…</div>`;
+    document.getElementById("feed").innerHTML=msg;
+    document.getElementById("kbList").innerHTML=msg;
+    document.getElementById("meetList").innerHTML=msg;
+  }else{
+    initLocalBackend();
+  }
+}
+function backendReady(){if(Backend)return true;alert("กำลังเชื่อมต่อฐานข้อมูล รอสักครู่แล้วลองใหม่");return false;}
+
+/* ---------- modal ยืนยัน (คืน Promise<boolean>) ---------- */
+function confirmDialog(msg,{title="ยืนยันการลบ",yes="ลบ"}={}){
+  return new Promise(resolve=>{
+    const m=document.getElementById("confirmModal");
+    document.getElementById("confirmTitle").textContent=title;
+    document.getElementById("confirmMsg").textContent=msg;
+    const yBtn=document.getElementById("confirmYes"),nBtn=document.getElementById("confirmNo");
+    yBtn.textContent=yes;m.hidden=false;
+    const done=v=>{m.hidden=true;yBtn.removeEventListener("click",oy);nBtn.removeEventListener("click",on);m.removeEventListener("click",ob);resolve(v);};
+    const oy=()=>done(true),on=()=>done(false),ob=e=>{if(e.target===m)done(false);};
+    yBtn.addEventListener("click",oy);nBtn.addEventListener("click",on);m.addEventListener("click",ob);
+  });
+}
+
+/* ---------- identity helpers ---------- */
+function memberByLine(line){return CDC_DATA.members.find(m=>m.line===line)||null;}
+function displayOf(m){return m?(m.name||m.line||"ไม่ระบุ"):"ไม่ระบุ";}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
+const THMON=["ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค."];
+function formatTS(ts){const d=new Date(ts);
+  return `${d.getDate()} ${THMON[d.getMonth()]} ${d.getFullYear()+543} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;}
+function whoOptions(sel){
+  return `<option value="">— เลือกชื่อ —</option>`+CDC_DATA.members.map(m=>{
+    const a=animalFor(m);const label=m.name&&m.line&&m.name!==m.line?`${displayOf(m)} (${m.line})`:displayOf(m);
+    return `<option value="${esc(m.line)}" ${m.line===sel?"selected":""}>${a.emoji} ${esc(label)}</option>`;
+  }).join("");}
+function syncWho(){document.querySelectorAll("select.who").forEach(s=>{s.innerHTML=whoOptions(ME);});}
+
+/* ---------- อัปโหลดรูป: ย่อในเครื่อง -> dataURL เก็บลง Firestore (ไม่ต้องใช้ Storage) ---------- */
+const IMG_MAX=1200, IMG_Q=0.7, IMG_LIMIT=900*1024;   // ย่อกว้าง/สูงสุด 1200px, เพดาน ~900KB (ใต้ลิมิต doc Firestore 1MB)
+function readImageToDataURL(file){
+  return new Promise((resolve,reject)=>{
+    if(!file.type.startsWith("image/")){reject("ไฟล์นี้ไม่ใช่รูปภาพ");return;}
+    const fr=new FileReader();
+    fr.onload=()=>{
+      const img=new Image();
+      img.onload=()=>{
+        let w=img.width,h=img.height;
+        if(w>IMG_MAX||h>IMG_MAX){const s=IMG_MAX/Math.max(w,h);w=Math.round(w*s);h=Math.round(h*s);}
+        const cv=document.createElement("canvas");cv.width=w;cv.height=h;
+        cv.getContext("2d").drawImage(img,0,0,w,h);
+        let q=IMG_Q,url=cv.toDataURL("image/jpeg",q);
+        while(url.length>IMG_LIMIT&&q>0.4){q-=0.1;url=cv.toDataURL("image/jpeg",q);}
+        if(url.length>IMG_LIMIT){reject("รูปใหญ่เกินไป ลองเลือกรูปที่เล็กลง");return;}
+        resolve(url);
+      };
+      img.onerror=()=>reject("เปิดรูปไม่สำเร็จ");
+      img.src=fr.result;
+    };
+    fr.onerror=()=>reject("อ่านไฟล์ไม่สำเร็จ");
+    fr.readAsDataURL(file);
+  });
+}
+let boardImage="";                                   // รูปแนบในโพสต์ (1 รูป)
+let kbImages=[];                                     // รูปแนบในบทความ (หลายรูป)
+function renderKbImages(){
+  const box=document.getElementById("kbImgPreview");
+  if(!kbImages.length){box.hidden=true;box.innerHTML="";return;}
+  box.hidden=false;
+  box.innerHTML=kbImages.map((u,i)=>`<div class="img-thumb"><img src="${u}" alt="รูปบทความ"/><button type="button" class="rm" data-i="${i}" title="ลบรูป">×</button></div>`).join("");
+}
+const KB_IMG_BUDGET=900*1024;                        // รวมทุกรูปต้องไม่เกิน ~900KB (ใต้ลิมิต doc Firestore 1MB)
+async function kbAddImages(files){
+  for(const f of files){
+    try{
+      const url=await readImageToDataURL(f);
+      const total=kbImages.reduce((s,u)=>s+u.length,0)+url.length;
+      if(total>KB_IMG_BUDGET){alert("รูปรวมกันใหญ่เกินไป (เก็บได้จำกัดต่อบทความ) — ลบบางรูปหรือใช้รูปเล็กลง");break;}
+      kbImages.push(url);
+    }catch(err){alert(err);}
+  }
+  renderKbImages();
+}
+function bindImagePicker(btnId,inputId,previewId,setUrl){
+  const btn=document.getElementById(btnId),input=document.getElementById(inputId),prev=document.getElementById(previewId);
+  btn.addEventListener("click",()=>input.click());
+  input.addEventListener("change",async()=>{
+    const f=input.files[0];input.value="";if(!f)return;
+    try{
+      const url=await readImageToDataURL(f);setUrl(url);
+      prev.hidden=false;prev.innerHTML=`<img src="${url}" alt="ตัวอย่างรูป"/><button type="button" class="rm" title="ลบรูป">×</button>`;
+      prev.querySelector(".rm").addEventListener("click",()=>{setUrl("");prev.hidden=true;prev.innerHTML="";});
+    }catch(err){alert(err);}
+  });
+}
+function clearImagePreview(previewId,setUrl){const prev=document.getElementById(previewId);setUrl("");prev.hidden=true;prev.innerHTML="";}
+
+/* ===================================================================
+   กระดานสนทนา (DISCUSSION BOARD)
+=================================================================== */
+function commentHTML(c){
+  const m=memberByLine(c.author);
+  return `<div class="comment">${avatarMarkup(m,displayOf(m),"xs")}
+    <div class="bubble"><span class="name">${esc(displayOf(m))}<span class="ts">${formatTS(c.ts)}</span></span>
+    <div class="ct">${esc(c.text)}</div></div></div>`;
+}
+function postHTML(p){
+  const m=memberByLine(p.author);
+  const liked=p.likes.includes(ME);
+  const mine=p.author===ME;
+  if(postEditId===p.id){
+    return `<div class="post" data-id="${p.id}">
+      <div class="post-head">${avatarMarkup(m,displayOf(m),"sm")}
+        <div><div class="name">${esc(displayOf(m))}</div><div class="ts">กำลังแก้ไข…</div></div></div>
+      <div class="post-edit">
+        <textarea data-editinput rows="3">${esc(p.text||"")}</textarea>
+        ${p.image&&!postEditRemoveImg?`<div class="post-img" style="margin-top:8px"><img src="${p.image}" alt="" /></div>`:""}
+        <div class="row">
+          ${p.image&&!postEditRemoveImg?`<button class="rmimg" data-act="rmimg">✕ ลบรูปแนบ</button>`:""}
+          <button class="btn-ghost" data-act="editcancel">ยกเลิก</button>
+          <button class="btn-primary" data-act="editsave">บันทึก</button>
+        </div>
+      </div>
+    </div>`;
+  }
+  return `<div class="post" data-id="${p.id}">
+    <div class="post-head">${avatarMarkup(m,displayOf(m),"sm")}
+      <div><div class="name">${esc(displayOf(m))}</div><div class="ts">${formatTS(p.ts)}${p.edited?" · แก้ไขแล้ว":""}</div></div></div>
+    ${p.text?`<div class="post-body">${esc(p.text)}</div>`:""}
+    ${p.image?`<div class="post-img"><img src="${p.image}" alt="รูปประกอบโพสต์" /></div>`:""}
+    <div class="post-actions">
+      <button class="act like ${liked?"liked":""}" data-act="like">${liked?"❤️":"🤍"} <span>${p.likes.length||""}</span> ถูกใจ</button>
+      <button class="act" data-act="toggle">💬 <span>${p.comments.length||""}</span> ความคิดเห็น</button>
+      ${mine?`<button class="act edit" data-act="edit" title="แก้ไขโพสต์">✏️</button>
+      <button class="act del" data-act="delete" title="ลบโพสต์ของฉัน">🗑</button>`:""}
+    </div>
+    <div class="comments${openComments.has(p.id)?" open":""}">
+      ${p.comments.map(commentHTML).join("")}
+      <div class="add-comment">
+        ${ME?avatarMarkup(memberByLine(ME),displayOf(memberByLine(ME)),"xs"):""}
+        <input type="text" placeholder="${ME?`ตอบในนาม ${esc(displayOf(memberByLine(ME)))}…`:"เลือกชื่อคุณที่ช่อง “โพสต์ในนาม” ด้านบนก่อน"}" data-cinput />
+        <button data-act="comment">ส่ง</button>
+      </div>
+    </div>
+  </div>`;
+}
+function renderFeed(){
+  const feed=document.getElementById("feed");
+  if(!POSTS.length){feed.innerHTML=`<div class="empty-feed">ยังไม่มีโพสต์ — เริ่มคุยกันเป็นคนแรกเลย 👋</div>`;return;}
+  feed.innerHTML=[...POSTS].sort((a,b)=>b.ts-a.ts).map(postHTML).join("");
+}
+/* เด้ง popup เลือกชื่อ — คืน Promise<boolean> (true ถ้าเลือกแล้ว) */
+function pickIdentity(){
+  return new Promise(resolve=>{
+    const m=document.getElementById("whoModal"),sel=document.getElementById("whoModalSelect");
+    sel.value=ME||"";m.hidden=false;sel.focus();
+    const ok=document.getElementById("whoModalOk"),cancel=document.getElementById("whoModalCancel");
+    const done=v=>{m.hidden=true;ok.removeEventListener("click",onOk);cancel.removeEventListener("click",onCancel);m.removeEventListener("click",onBg);resolve(v);};
+    const onOk=()=>{if(!sel.value){sel.focus();return;}setME(sel.value);done(true);};
+    const onCancel=()=>done(false),onBg=e=>{if(e.target===m)done(false);};
+    ok.addEventListener("click",onOk);cancel.addEventListener("click",onCancel);m.addEventListener("click",onBg);
+  });
+}
+async function ensureME(){ return ME ? true : await pickIdentity(); }
+document.getElementById("boardPost").addEventListener("click",async()=>{
+  const ta=document.getElementById("boardText");const text=ta.value.trim();
+  if(!text&&!boardImage){ta.focus();return;}
+  if(!await ensureME()||!backendReady())return;
+  Backend.addPost({author:ME,text,ts:Date.now(),likes:[],comments:[],image:boardImage});
+  ta.value="";
+  clearImagePreview("boardImgPreview",u=>{boardImage=u;});
+});
+document.getElementById("feed").addEventListener("click",async e=>{
+  const btn=e.target.closest("[data-act]");if(!btn)return;
+  const postEl=btn.closest(".post");const id=postEl.dataset.id;const p=findPost(id);if(!p)return;
+  const act=btn.dataset.act;
+  if(act==="delete"){
+    if(!backendReady()||p.author!==ME)return;
+    if(await confirmDialog("ลบโพสต์นี้? ลบแล้วกู้คืนไม่ได้",{title:"ลบโพสต์"}))Backend.deletePost(id);
+    return;
+  }
+  if(act==="edit"){
+    if(p.author!==ME)return;
+    postEditId=id;postEditRemoveImg=false;renderFeed();
+    const t=document.querySelector(`.post[data-id="${id}"] [data-editinput]`);if(t){t.focus();t.setSelectionRange(t.value.length,t.value.length);}
+    return;
+  }
+  if(act==="editcancel"){postEditId=null;renderFeed();return;}
+  if(act==="rmimg"){postEditRemoveImg=true;renderFeed();return;}
+  if(act==="editsave"){
+    if(!backendReady())return;
+    const text=postEl.querySelector("[data-editinput]").value.trim();
+    const image=postEditRemoveImg?"":p.image;
+    if(!text&&!image){alert("โพสต์ต้องมีข้อความหรือรูปอย่างน้อยหนึ่งอย่าง");return;}
+    postEditId=null;
+    Backend.updatePost(id,{text,image,edited:true});
+    return;
+  }
+  if(act==="toggle"){
+    openComments.has(id)?openComments.delete(id):openComments.add(id);
+    postEl.querySelector(".comments").classList.toggle("open");
+    return;
+  }
+  if(act==="like"){
+    if(!await ensureME()||!backendReady())return;
+    Backend.toggleLike(id,ME);
+    return;
+  }
+  if(act==="comment"){
+    const input=postEl.querySelector("[data-cinput]");const text=input.value.trim();
+    if(!text){input.focus();return;}           // อ่านข้อความก่อนเปิด popup กันค่าหายตอน re-render
+    if(!await ensureME()||!backendReady())return;
+    openComments.add(id);
+    Backend.addComment(id,{author:ME,text,ts:Date.now()});
+  }
+});
+
+/* ===================================================================
+   คลังความรู้ (KNOWLEDGE BASE)
+=================================================================== */
+function articleHTML(a){
+  const m=memberByLine(a.author);
+  const tags=(a.tags||[]).filter(Boolean);
+  const imgs=(a.images&&a.images.length)?a.images:(a.image?[a.image]:[]);
+  return `<div class="article" data-id="${a.id}">
+    ${imgs.length?`<div class="article-gallery">${imgs.map(u=>`<img src="${esc(u)}" alt="รูปประกอบบทความ" />`).join("")}</div>`:""}
+    <h3 data-act="open">${esc(a.title)}</h3>
+    <div class="article-meta">${avatarMarkup(m,displayOf(m),"xs")} <span>${esc(displayOf(m))}</span> · <span>${formatTS(a.ts)}${a.edited?" · แก้ไขแล้ว":""}</span>
+      ${a.author===ME?`<span style="margin-left:auto;display:flex;gap:4px">
+        <button class="article-del" data-act="edit" title="แก้ไขบทความ" style="color:#5b6781">✏️ แก้ไข</button>
+        <button class="article-del" data-act="del" title="ลบบทความของฉัน">🗑 ลบ</button></span>`:""}</div>
+    ${tags.length?`<div class="article-tags">${tags.map(t=>`<span class="t">${esc(t)}</span>`).join("")}</div>`:""}
+    <div class="article-body clamp">${esc(a.body)}</div>
+    <button class="more" data-act="open">อ่านต่อ</button>
+  </div>`;
+}
+const kbState={q:"",tag:""};
+let kbEditId=null;                       // ถ้าไม่ null = กำลังแก้ไขบทความ id นี้
+const kbEditTags=new Set();              // แท็กที่เลือกในตัวแก้ไข
+function kbCanonicalTags(){
+  // อ้างอิงแท็กจากความรู้ของสมาชิก (หน้าสมาชิก) + เพิ่ม TradingView
+  const sk=sortedTags("skills").map(x=>x[0]); if(!sk.includes("TradingView"))sk.push("TradingView");
+  return sk;
+}
+function renderKbTagSelect(){
+  const canon=kbCanonicalTags();
+  const customs=[...kbEditTags].filter(t=>!canon.includes(t));   // แท็กที่ผู้ใช้เพิ่มเอง
+  const all=[...canon,...customs];
+  document.getElementById("kbTagSelect").innerHTML=
+    all.map(t=>`<button type="button" class="chip${kbEditTags.has(t)?" sel":""}" data-tag="${esc(t)}">${esc(t)}</button>`).join("");
+}
+function openKbEditor(a){
+  kbEditId=a?a.id:null;
+  document.getElementById("kbTitle").value=a?a.title:"";
+  document.getElementById("kbBody").value=a?a.body:"";
+  kbEditTags.clear(); if(a&&a.tags)a.tags.forEach(t=>kbEditTags.add(t));
+  renderKbTagSelect();
+  kbImages = a ? (a.images&&a.images.length ? [...a.images] : (a.image?[a.image]:[])) : [];   // รองรับบทความเก่าที่เป็นรูปเดี่ยว
+  renderKbImages();
+  document.getElementById("kbWho").value=a?a.author:ME;
+  document.getElementById("kbSave").textContent=a?"บันทึกการแก้ไข":"เผยแพร่";
+  kbEditor.hidden=false;
+  document.getElementById("kbTitle").focus();
+}
+function kbAllTags(){const c={};for(const a of ARTICLES)for(const t of (a.tags||[]))c[t]=(c[t]||0)+1;return Object.entries(c).sort((x,y)=>y[1]-x[1]);}
+function renderTagFilter(){
+  document.getElementById("kbTagFilter").innerHTML=kbAllTags()
+    .map(([t,n])=>`<button class="chip${kbState.tag===t?" sel":""}" data-tag="${esc(t)}">${esc(t)} (${n})</button>`).join("");
+}
+function articleMatches(a){
+  if(kbState.tag&&!(a.tags||[]).includes(kbState.tag))return false;
+  if(kbState.q){
+    const hay=(a.title+" "+a.body+" "+(a.tags||[]).join(" ")+" "+displayOf(memberByLine(a.author))).toLowerCase();
+    if(!hay.includes(kbState.q.toLowerCase()))return false;
+  }
+  return true;
+}
+function renderKB(){
+  renderTagFilter();
+  const list=document.getElementById("kbList");
+  if(!ARTICLES.length){list.innerHTML=`<div class="empty-feed">ยังไม่มีบทความ — เขียนความรู้ชิ้นแรกให้กลุ่มกันเลย ✍️</div>`;return;}
+  const filtered=[...ARTICLES].filter(articleMatches).sort((a,b)=>b.ts-a.ts);
+  if(!filtered.length){list.innerHTML=`<div class="empty-feed">ไม่พบบทความที่ตรงกับเงื่อนไข</div>`;return;}
+  list.innerHTML=filtered.map(articleHTML).join("");
+}
+const kbEditor=document.getElementById("kbEditor");
+document.getElementById("kbNew").addEventListener("click",()=>{ if(kbEditor.hidden)openKbEditor(null); else {kbEditor.hidden=true;kbEditId=null;} });
+document.getElementById("kbCancel").addEventListener("click",()=>{kbEditor.hidden=true;kbEditId=null;kbImages=[];renderKbImages();});
+document.getElementById("kbSave").addEventListener("click",async()=>{
+  const title=document.getElementById("kbTitle").value.trim();
+  const body=document.getElementById("kbBody").value.trim();
+  const tags=[...kbEditTags];
+  if(!backendReady())return;
+  if(!title||!body){alert("ใส่หัวข้อและเนื้อหาก่อนนะ");return;}
+  if(kbEditId){
+    Backend.updateArticle(kbEditId,{title,body,tags,images:kbImages.slice(),image:"",edited:true});
+  }else{
+    if(!await ensureME())return;     // ยังไม่เลือกชื่อ -> เด้ง popup เลือก
+    Backend.addArticle({author:ME,title,body,tags,ts:Date.now(),images:kbImages.slice()});
+  }
+  kbEditId=null;kbEditTags.clear();
+  document.getElementById("kbTitle").value="";document.getElementById("kbBody").value="";
+  kbImages=[];renderKbImages();
+  kbEditor.hidden=true;
+});
+document.getElementById("kbTagSelect").addEventListener("click",e=>{
+  const c=e.target.closest(".chip");if(!c)return;
+  const t=c.dataset.tag; kbEditTags.has(t)?kbEditTags.delete(t):kbEditTags.add(t);
+  renderKbTagSelect();      // re-render เผื่อแท็กที่เพิ่มเองถูกเอาออก จะได้หายจากรายการ
+});
+function addCustomKbTag(){
+  const inp=document.getElementById("kbTagCustom");const t=inp.value.trim();
+  if(!t)return; kbEditTags.add(t); inp.value=""; renderKbTagSelect();
+}
+document.getElementById("kbTagAddBtn").addEventListener("click",addCustomKbTag);
+document.getElementById("kbTagCustom").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();addCustomKbTag();}});
+document.getElementById("kbImgBtn").addEventListener("click",()=>document.getElementById("kbImgInput").click());
+document.getElementById("kbImgInput").addEventListener("change",async()=>{
+  const input=document.getElementById("kbImgInput");const files=[...input.files];input.value="";
+  await kbAddImages(files);
+});
+document.getElementById("kbImgPreview").addEventListener("click",e=>{
+  const b=e.target.closest(".rm");if(!b)return;
+  kbImages.splice(+b.dataset.i,1);renderKbImages();
+});
+document.getElementById("kbList").addEventListener("click",async e=>{
+  const btn=e.target.closest("[data-act]");if(!btn)return;
+  const art=btn.closest(".article");const id=art.dataset.id;const act=btn.dataset.act;
+  const a=ARTICLES.find(x=>x.id===id);
+  if(act==="del"){
+    if(!backendReady()||!a||a.author!==ME)return;
+    if(await confirmDialog("ลบบทความนี้? ลบแล้วกู้คืนไม่ได้",{title:"ลบบทความ"}))Backend.deleteArticle(id);
+    return;
+  }
+  if(act==="edit"){
+    if(!a||a.author!==ME)return;
+    openKbEditor(a);
+    return;
+  }
+  if(act==="open"){
+    const body=art.querySelector(".article-body");const more=art.querySelector(".more");
+    const open=body.classList.toggle("clamp")===false;
+    if(more)more.textContent=open?"ย่อ":"อ่านต่อ";
+  }
+});
+document.getElementById("kbQ").addEventListener("input",e=>{kbState.q=e.target.value;renderKB();});
+document.getElementById("kbTagFilter").addEventListener("click",e=>{
+  const c=e.target.closest(".chip");if(!c)return;
+  kbState.tag=kbState.tag===c.dataset.tag?"":c.dataset.tag;renderKB();
+});
+bindImagePicker("boardImgBtn","boardImgInput","boardImgPreview",u=>{boardImage=u;});
+
+/* ===================================================================
+   นัดหมายกลุ่ม + โหวต (MEETUPS)
+=================================================================== */
+let meetDraftOpts=[];                    // ตัวเลือกที่กำลังเพิ่มในฟอร์มสร้างนัด
+function voterChips(lines){
+  return lines.map(l=>{const m=memberByLine(l);const a=animalFor(m);return `<span title="${esc(displayOf(m))}">${a.emoji} ${esc(displayOf(m))}</span>`;}).join("");
+}
+function meetHTML(mt){
+  const opts=mt.options||[];const votes=mt.votes||{};
+  const counts=opts.map(o=>(votes[o.id]||[]).length);
+  const maxC=Math.max(...counts,0);
+  const voterSet=new Set(); opts.forEach(o=>(votes[o.id]||[]).forEach(l=>voterSet.add(l)));
+  const author=memberByLine(mt.author);
+  return `<div class="meet" data-id="${mt.id}">
+    <div class="meet-head">
+      <div><div class="meet-title">${esc(mt.title)}</div>
+        <div class="meet-by">โดย ${esc(displayOf(author))} · ${formatTS(mt.ts)}</div></div>
+      ${mt.author===ME?`<div class="meet-actions">
+        <button class="act del" data-act="meetdel" title="ลบการนัดนี้">🗑</button></div>`:""}
+    </div>
+    ${mt.note?`<div class="meet-note">${esc(mt.note)}</div>`:""}
+    <div class="meet-opts">
+      ${sortOpts(opts).map((o)=>{
+        const voters=votes[o.id]||[];const n=voters.length;const voted=voters.includes(ME);
+        const win=maxC>0&&n===maxC;
+        return `<button class="opt${voted?" voted":""}${win?" win":""}" data-act="vote" data-opt="${esc(o.id)}">
+          <div class="opt-fill" style="width:${maxC?Math.round(n/maxC*100):0}%"></div>
+          <div class="opt-row">
+            <span class="opt-label">${esc(o.label)}${win?`<span class="win-badge">มาแรง</span>`:""}</span>
+            <span class="opt-check"><span class="opt-count">${n} โหวต</span>
+              <span class="tick">${voted?"✓":""}</span></span>
+          </div>
+          ${n?`<div class="opt-voters">${voterChips(voters)}</div>`:""}
+        </button>`;
+      }).join("")}
+    </div>
+    <div class="meet-foot">🗳️ มีผู้โหวตแล้ว <b>${voterSet.size}</b> คน · กดช่วงที่สะดวก<b>กี่อันก็ได้</b> ในนาม <b>${ME?esc(displayOf(memberByLine(ME))):"— ยังไม่เลือกชื่อด้านบน —"}</b> (กดซ้ำเพื่อยกเลิก)</div>
+  </div>`;
+}
+function renderMeetups(){
+  const list=document.getElementById("meetList");if(!list)return;
+  if(!MEETUPS.length){list.innerHTML=`<div class="empty-feed">ยังไม่มีการนัด — กด “เพิ่มการนัดใหม่” เพื่อเสนอวัน-เวลาให้เพื่อนโหวต 🗳️</div>`;return;}
+  list.innerHTML=[...MEETUPS].sort((a,b)=>b.ts-a.ts).map(meetHTML).join("");
+}
+const SLOT_MIN={"เช้า (08-12)":480,"บ่าย (12-17)":720,"เย็น (17-20)":1020,"ค่ำ (20-23)":1200}; // รองรับนัดเก่าที่เป็นช่วง/รายชั่วโมง
+function slotMinutes(slot){
+  if(SLOT_MIN[slot]!=null)return SLOT_MIN[slot];
+  const m=/(\d{1,2}):(\d{2})/.exec(slot||""); return m?(+m[1])*60+(+m[2]):9999;   // เวลาเอง เรียงตามนาฬิกา
+}
+function sortOpts(opts){
+  return [...opts].sort((a,b)=>{
+    if(a.date&&b.date&&a.date!==b.date)return a.date<b.date?-1:1;
+    return slotMinutes(a.slot)-slotMinutes(b.slot);
+  });
+}
+function renderMeetDraftOpts(){
+  document.getElementById("meetOptList").innerHTML=sortOpts(meetDraftOpts).map(o=>
+    `<div class="opt-edit-row"><span>${esc(o.label)}</span><button type="button" class="x" data-id="${o.id}" title="ลบตัวเลือก">×</button></div>`).join("");
+}
+const meetEditor=document.getElementById("meetEditor");
+document.getElementById("meetNew").addEventListener("click",()=>{
+  if(meetEditor.hidden){meetEditor.hidden=false;meetDraftOpts=[];renderMeetDraftOpts();document.getElementById("meetWho").value=ME;document.getElementById("meetTitle").focus();}
+  else meetEditor.hidden=true;
+});
+document.getElementById("meetCancel").addEventListener("click",()=>{meetEditor.hidden=true;});
+const WEEKDAY_TH=["อาทิตย์","จันทร์","อังคาร","พุธ","พฤหัสบดี","ศุกร์","เสาร์"];
+function thaiDateLabel(iso){
+  const [y,mo,da]=iso.split("-").map(Number);
+  const d=new Date(y,mo-1,da);
+  return `${WEEKDAY_TH[d.getDay()]} ${da} ${THMON[mo-1]} ${y+543}`;
+}
+function addMeetOpt(){
+  const hint=document.getElementById("meetHint");hint.textContent="";
+  const date=document.getElementById("meetOptDate").value;
+  const start=document.getElementById("meetStart").value;
+  const end=document.getElementById("meetEnd").value;
+  if(!date){hint.textContent="เลือกวันในปฏิทินก่อน";return;}
+  if(!start||!end){hint.textContent="ใส่เวลาเริ่มและเวลาจบ";return;}
+  if(end<=start){hint.textContent="เวลาจบต้องอยู่หลังเวลาเริ่ม";return;}   // "18:00" < "20:00" เทียบ string ได้
+  const slot=`${start}–${end}`;
+  const label=`${thaiDateLabel(date)} · ${slot} น.`;
+  if(meetDraftOpts.some(o=>o.label===label)){hint.textContent="ตัวเลือกนี้มีอยู่แล้ว";return;}
+  meetDraftOpts.push({id:uid(),label,date,slot,start,end});
+  renderMeetDraftOpts();
+}
+document.getElementById("meetOptAdd").addEventListener("click",addMeetOpt);
+document.getElementById("meetOptList").addEventListener("click",e=>{
+  const x=e.target.closest(".x");if(!x)return;meetDraftOpts=meetDraftOpts.filter(o=>o.id!==x.dataset.id);renderMeetDraftOpts();
+});
+document.getElementById("meetSave").addEventListener("click",async()=>{
+  const title=document.getElementById("meetTitle").value.trim();
+  const note=document.getElementById("meetNote").value.trim();
+  const hint=document.getElementById("meetHint");hint.textContent="";
+  if(!backendReady())return;
+  if(!title){hint.textContent="ใส่ชื่อการนัดก่อน";return;}
+  if(meetDraftOpts.length<1){hint.textContent="ใส่ตัวเลือกวัน-เวลาอย่างน้อย 1 อัน";return;}
+  if(!await ensureME())return;       // ยังไม่เลือกชื่อ -> เด้ง popup เลือก
+  Backend.addMeetup({author:ME,title,note,options:meetDraftOpts.slice(),votes:{},ts:Date.now()});
+  document.getElementById("meetTitle").value="";document.getElementById("meetNote").value="";
+  meetDraftOpts=[];renderMeetDraftOpts();meetEditor.hidden=true;
+});
+document.getElementById("meetList").addEventListener("click",async e=>{
+  const btn=e.target.closest("[data-act]");if(!btn)return;
+  const el=btn.closest(".meet");const id=el.dataset.id;const mt=findMeetup(id);if(!mt)return;
+  const act=btn.dataset.act;
+  if(act==="meetdel"){
+    if(!backendReady()||mt.author!==ME)return;
+    if(await confirmDialog("ลบการนัดนี้? ผลโหวตทั้งหมดจะหายไปด้วย",{title:"ลบการนัด"}))Backend.deleteMeetup(id);
+    return;
+  }
+  if(act==="vote"){
+    const optId=btn.dataset.opt;                 // เก็บก่อนเปิด popup กันค่าหายตอน re-render
+    if(!await ensureME()||!backendReady())return;
+    Backend.voteMeetup(id,optId,ME);
+  }
+});
+
+/* identity selects — เปลี่ยนที่ไหนก็ sync ทั้งหมด */
+document.querySelectorAll("select.who").forEach(s=>s.addEventListener("change",e=>setME(e.target.value)));
+
+/* ---------- tabs ---------- */
+document.querySelectorAll("nav.tabs button").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll("nav.tabs button").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+  b.classList.add("active");
+  document.getElementById(b.dataset.tab).classList.add("active");
+  window.scrollTo({top:0});
+}));
+document.getElementById("filterToggle").addEventListener("click",()=>{
+  document.getElementById("filters").classList.toggle("open");
+});
+document.getElementById("q").addEventListener("input",e=>{state.q=e.target.value;render();});
+
+/* ---------- init ---------- */
+document.getElementById("memcount").textContent=CDC_DATA.members.length;
+buildFilters();
+render();
+buildSchedule();
+buildSuggestions();
+syncWho();
+renderKbTagSelect();
+startBackend();
+</script>
+
+<!-- โมดูล Firebase: ทำงานก็ต่อเมื่อใส่ window.FIREBASE_CONFIG ไว้ด้านบนแล้ว -->
+<script type="module">
+  const cfg = window.FIREBASE_CONFIG;
+  if (cfg && window.__cdc) {
+    try{
+      const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
+      const { getFirestore, collection, addDoc, doc, updateDoc, deleteDoc, onSnapshot, arrayUnion, arrayRemove }
+        = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+      const db = getFirestore(initializeApp(cfg));
+      const postsCol = collection(db, "posts");
+      const artsCol  = collection(db, "articles");
+      const meetCol  = collection(db, "meetups");
+
+      window.__cdc.setBackend({
+        mode:"firebase",
+        addPost(p){ addDoc(postsCol, p); },                         // snapshot จะ re-render ให้เอง
+        updatePost(id, patch){ updateDoc(doc(db,"posts",id), patch); },
+        toggleLike(id, me){
+          const liked = (window.__cdc.findPost(id)?.likes || []).includes(me);
+          updateDoc(doc(db,"posts",id), { likes: liked ? arrayRemove(me) : arrayUnion(me) });
+        },
+        addComment(id, c){ updateDoc(doc(db,"posts",id), { comments: arrayUnion(c) }); },
+        deletePost(id){ deleteDoc(doc(db,"posts",id)); },
+        addArticle(a){ addDoc(artsCol, a); },
+        updateArticle(id, patch){ updateDoc(doc(db,"articles",id), patch); },
+        deleteArticle(id){ deleteDoc(doc(db,"articles",id)); },
+        addMeetup(m){ addDoc(meetCol, m); },
+        deleteMeetup(id){ deleteDoc(doc(db,"meetups",id)); },
+        voteMeetup(id, optId, me){
+          const voted = ((window.__cdc.findMeetup(id)?.votes||{})[optId]||[]).includes(me);
+          updateDoc(doc(db,"meetups",id), { [`votes.${optId}`]: voted ? arrayRemove(me) : arrayUnion(me) });
+        },
+      });
+
+      const onErr=(elId,name)=>err=>{
+        console.error(`Firestore ${name} listener:`, err);
+        const el=document.getElementById(elId);
+        if(el)el.innerHTML=`<div class="empty-feed">โหลด“${name}”ไม่ได้ — ยังไม่ได้เปิดสิทธิ์ collection นี้ในกฎ Firestore (ดู README)</div>`;
+      };
+      onSnapshot(postsCol, snap=>{
+        window.__cdc.applyPosts(snap.docs.map(d=>{
+          const x=d.data(); return { id:d.id, author:x.author, text:x.text||"", image:x.image||"", edited:!!x.edited, ts:x.ts||0, likes:x.likes||[], comments:x.comments||[] };
+        }));
+      }, onErr("feed","กระดานสนทนา"));
+      onSnapshot(artsCol, snap=>{
+        window.__cdc.applyArticles(snap.docs.map(d=>{
+          const x=d.data(); return { id:d.id, author:x.author, title:x.title, body:x.body, images:x.images||(x.image?[x.image]:[]), edited:!!x.edited, tags:x.tags||[], ts:x.ts||0 };
+        }));
+      }, onErr("kbList","คลังความรู้"));
+      onSnapshot(meetCol, snap=>{
+        window.__cdc.applyMeetups(snap.docs.map(d=>{
+          const x=d.data(); return { id:d.id, author:x.author, title:x.title, note:x.note||"", options:x.options||[], votes:x.votes||{}, ts:x.ts||0 };
+        }));
+      }, onErr("meetList","นัดหมายกลุ่ม"));
+    }catch(e){
+      console.error("Firebase init failed:", e);
+      document.getElementById("feed").innerHTML = `<div class="empty-feed">เชื่อมต่อฐานข้อมูลไม่สำเร็จ — ตรวจ config / กฎความปลอดภัยของ Firestore</div>`;
+    }
+  }
+</script>
+</body>
+</html>
