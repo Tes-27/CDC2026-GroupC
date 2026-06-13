@@ -189,6 +189,7 @@
   .post-head .name{font-size:15px;font-weight:600}
   .post-head .ts{font-size:12px;color:var(--ink-soft)}
   .post-body{font-size:14.5px;color:#2c3a57;white-space:pre-wrap;word-break:break-word;line-height:1.55}
+  .post-body a,.article-body a,.ct a,.meet-note a{color:var(--accent);text-decoration:underline;word-break:break-all}
   .post-actions{display:flex;gap:8px;margin-top:12px;border-top:1px solid var(--line);padding-top:10px}
   .act{appearance:none;border:0;background:none;cursor:pointer;font-family:inherit;font-size:13.5px;
     color:var(--ink-soft);padding:6px 12px;border-radius:9px;transition:.12s;display:inline-flex;align-items:center;gap:6px}
@@ -1419,6 +1420,18 @@ function matches(m){
 
 /* ---------- render directory ---------- */
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));}
+/* แปลง URL ในข้อความให้เป็นลิงก์กดได้ — escape ทุกส่วนก่อนเสมอ (กัน HTML injection) */
+function linkify(text){
+  const re=/(https?:\/\/[^\s<]+)/g; let out="",last=0,m;
+  while((m=re.exec(text))){
+    out+=esc(text.slice(last,m.index));
+    let url=m[0],trail=""; const t=url.match(/[.,;:!?)\]}"']+$/);   // ตัดเครื่องหมายวรรคตอนท้าย URL ออก
+    if(t){trail=url.slice(url.length-t[0].length);url=url.slice(0,url.length-t[0].length);}
+    out+=`<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(url)}</a>`+esc(trail);
+    last=m.index+m[0].length;
+  }
+  return out+esc(text.slice(last));
+}
 function isHit(g,t){return state.sel[g].has(t);}
 
 function render(){
@@ -1663,7 +1676,7 @@ function commentHTML(c){
   const m=memberByLine(c.author);
   return `<div class="comment">${avatarMarkup(m,displayOf(m),"xs")}
     <div class="bubble"><span class="name">${esc(displayOf(m))}<span class="ts">${formatTS(c.ts)}</span></span>
-    <div class="ct">${esc(c.text)}</div></div></div>`;
+    <div class="ct">${linkify(c.text)}</div></div></div>`;
 }
 function postHTML(p){
   const m=memberByLine(p.author);
@@ -1687,7 +1700,7 @@ function postHTML(p){
   return `<div class="post" data-id="${p.id}">
     <div class="post-head">${avatarMarkup(m,displayOf(m),"sm")}
       <div><div class="name">${esc(displayOf(m))}</div><div class="ts">${formatTS(p.ts)}${p.edited?" · แก้ไขแล้ว":""}</div></div></div>
-    ${p.text?`<div class="post-body">${esc(p.text)}</div>`:""}
+    ${p.text?`<div class="post-body">${linkify(p.text)}</div>`:""}
     ${p.image?`<div class="post-img"><img src="${p.image}" alt="รูปประกอบโพสต์" /></div>`:""}
     <div class="post-actions">
       <button class="act like ${liked?"liked":""}" data-act="like">${liked?"❤️":"🤍"} <span>${p.likes.length||""}</span> ถูกใจ</button>
@@ -1791,7 +1804,7 @@ function articleHTML(a){
         <button class="article-del" data-act="edit" title="แก้ไขบทความ" style="color:#5b6781">✏️ แก้ไข</button>
         <button class="article-del" data-act="del" title="ลบบทความของฉัน">🗑 ลบ</button></span>`:""}</div>
     ${tags.length?`<div class="article-tags">${tags.map(t=>`<span class="t">${esc(t)}</span>`).join("")}</div>`:""}
-    <div class="article-body clamp">${esc(a.body)}</div>
+    <div class="article-body clamp">${linkify(a.body)}</div>
     <button class="more" data-act="open">อ่านต่อ</button>
   </div>`;
 }
@@ -1931,7 +1944,7 @@ function meetHTML(mt){
       ${mt.author===ME?`<div class="meet-actions">
         <button class="act del" data-act="meetdel" title="ลบการนัดนี้">🗑</button></div>`:""}
     </div>
-    ${mt.note?`<div class="meet-note">${esc(mt.note)}</div>`:""}
+    ${mt.note?`<div class="meet-note">${linkify(mt.note)}</div>`:""}
     <div class="meet-opts">
       ${sortOpts(opts).map((o)=>{
         const voters=votes[o.id]||[];const n=voters.length;const voted=voters.includes(ME);

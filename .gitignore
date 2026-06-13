@@ -8,3 +8,6 @@ files.zip
 # ระบบ/เครื่องมือ
 .DS_Store
 .claude/
+
+# ไฟล์ backup จาก Firestore (มีข้อมูลส่วนตัว ไม่ควรขึ้น public)
+backup-firestore-*.json
